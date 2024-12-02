@@ -1,0 +1,281 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "Oblivion Hub",
+   LoadingTitle = "Loading", -- Missing closing quotation mark fixed
+   LoadingSubtitle = "by TuncayLive",
+   Theme = "Amethyst",
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = Oblivionhub, -- Create a custom folder for your hub/game
+      FileName = "Oblivion Hub"
+   },
+   Discord = {
+      Enabled = true,
+      Invite = "JDazVXrzAN", -- Missing comma fixed
+      RememberJoins = false -- Set this to false to make them join the discord every time they load it up
+   },
+   KeySystem = true, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Oblivion Hub",
+      Subtitle = "Key System",
+      Note = "Key In Discord Server",
+      FileName = "OblivionHubKey1", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"yes"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+
+local MainTab = Window:CreateTab("Movement", nil) -- Title, Image
+local MainSection = MainTab:CreateSection("Main")
+
+Rayfield:Notify({
+   Title = "You executed the script",
+   Content = "nice, right?",
+   Duration = 5,
+   Image = 13047715178,
+   Actions = { -- Notification Buttons
+      Ignore = {
+         Name = "Yeah!",
+         Callback = function()
+            print("The user is sigma!")
+         end
+      }
+   }
+})
+
+local Button = MainTab:CreateButton({
+   Name = "Infinite Jump Toggle",
+   Callback = function()
+       -- Toggles the infinite jump between on or off on every script run
+       _G.infinjump = not _G.infinjump
+
+       if _G.infinJumpStarted == nil then
+           -- Ensures this only runs once to save resources
+           _G.infinJumpStarted = true
+           
+           -- Notifies readiness
+           game.StarterGui:SetCore("SendNotification", {Title="Jumping"; Text="Infinite Jump Activated!"; Duration=5;})
+
+           -- The actual infinite jump
+           local plr = game:GetService('Players').LocalPlayer
+           local m = plr:GetMouse()
+           m.KeyDown:connect(function(k)
+               if _G.infinjump then
+                   if k:byte() == 32 then
+                       local humanoid = game:GetService('Players').LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
+                       humanoid:ChangeState('Jumping')
+                       wait()
+                       humanoid:ChangeState('Seated')
+                   end
+               end
+           end)
+       end
+   end
+})
+
+local Slider1 = MainTab:CreateSlider({
+   Name = "WalkSpeed Slider",
+   Range = {16, 500},
+   Increment = 1,
+   Suffix = "Speed",
+   CurrentValue = 16,
+   Flag = "sliderws",
+   Callback = function(Value)
+       game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+   end
+})
+
+local Slider2 = MainTab:CreateSlider({
+   Name = "JumpPower Slider",
+   Range = {16, 500},
+   Increment = 1,
+   Suffix = "Power",
+   CurrentValue = 16,
+   Flag = "sliderjp",
+   Callback = function(Value)
+       game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+   end
+})
+
+
+
+
+local InfiniteYieldTab = Window:CreateTab("Infinite Yield", nil) -- Title, Image
+local InfiniteYieldSection = InfiniteYieldTab:CreateSection("Main")
+
+local Button2 = InfiniteYieldTab:CreateButton({
+   Name = "Infinite Yield Toggle",
+   Callback = function()
+       -- Notifies readiness
+       game.StarterGui:SetCore("SendNotification", {Title="Injecting"; Text="Infinite Yield Activated!"; Duration=5;})
+       loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+   end
+})
+
+
+
+
+
+local InfiniteYieldTab = Window:CreateTab("Chatbypasser", nil) -- Title, Image
+local InfiniteYieldSection = InfiniteYieldTab:CreateSection("Main")
+
+local Button2 = InfiniteYieldTab:CreateButton({
+   Name = "Bypass Toggle",
+   Callback = function()
+       -- Notifies readiness
+       game.StarterGui:SetCore("SendNotification", {Title="Injecting"; Text="Chatbypasser Activated!"; Duration=5;})
+       loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/message%20(3).txt"))()
+   end
+})
+
+
+
+
+local InfiniteYieldTab = Window:CreateTab("Games", nil) -- Title, Image
+local InfiniteYieldSection = InfiniteYieldTab:CreateSection("Fisch")
+
+local Button3 = InfiniteYieldTab:CreateButton({
+   Name = "Fisch Beta Script Toggle",
+   Callback = function()
+       -- Notifies readiness
+       game.StarterGui:SetCore("SendNotification", {Title="Injecting"; Text="Fisch Beta Script Activated!"; Duration=5;})
+       loadstring(game:HttpGet("https://raw.githubusercontent.com/khen791/script-khen/refs/heads/main/fisch.lua", true))()
+   end
+})
+local InfiniteYieldSection = InfiniteYieldTab:CreateSection("Blox Fruits")
+
+local Button3 = InfiniteYieldTab:CreateButton({
+   Name = "Blox Fruits Autofarm Toggle",
+   Callback = function()
+       -- Notifies readiness
+       game.StarterGui:SetCore("SendNotification", {Title="Injecting"; Text="Blox Fruits Autofarm Activated!"; Duration=5;})
+       loadstring(game:HttpGet("https://raw.githubusercontent.com/Nebula-Manta/Public-Stingray/main/Script_BloxFruitsFullAuto"))()
+   end
+})
+
+
+
+local InfiniteYieldSection = InfiniteYieldTab:CreateSection("Strongest Battle Grounds")
+
+local Button3 = InfiniteYieldTab:CreateButton({
+   Name = "Kade Hub Toggle",
+   Callback = function()
+       -- Notifies readiness
+       game.StarterGui:SetCore("SendNotification", {Title="Injecting"; Text="Kade Hub Activated!"; Duration=5;})
+       loadstring(game:HttpGet("https://raw.githubusercontent.com/skibiditoiletfan2007/KadeHubRepository/main/Latest.lua"))()
+   end
+})
+
+local Button3 = InfiniteYieldTab:CreateButton({
+   Name = "Become Gojo (Use Saitama)",
+   Callback = function()
+       -- Notifies readiness
+       game.StarterGui:SetCore("SendNotification", {Title="Injecting"; Text="Moveset Changed!"; Duration=5;})
+       loadstring(game:HttpGet("https://raw.githubusercontent.com/skibiditoiletfan2007/BaldyToSorcerer/main/Latest.lua"))()
+   end
+})
+
+local Button3 = InfiniteYieldTab:CreateButton({
+   Name = "Five Seasons",
+   Callback = function()
+       -- Notifies readiness
+       game.StarterGui:SetCore("SendNotification", {Title="Executing"; Text="Move Successfully Used!"; Duration=5;})
+       loadstring(game:HttpGet("https://pastebin.com/raw/qxJxBvdX"))()
+   end
+})
+
+local Button3 = InfiniteYieldTab:CreateButton({
+   Name = "Stoic Bomb",
+   Callback = function()
+       -- Notifies readiness
+       game.StarterGui:SetCore("SendNotification", {Title="Executing"; Text="Move Successfully Used!"; Duration=5;})
+       loadstring(game:HttpGet("https://pastebin.com/raw/BQAA19Wh"))()
+   end
+})
+
+local Button3 = InfiniteYieldTab:CreateButton({
+   Name = "KJ Ultimate Variation 1",
+   Callback = function()
+       -- Notifies readiness
+       game.StarterGui:SetCore("SendNotification", {Title="Executing"; Text="Move Successfully Used!"; Duration=5;})
+       loadstring(game:HttpGet("https://pastebin.com/raw/J9Kv4Y95"))()
+   end
+})
+
+local Button3 = InfiniteYieldTab:CreateButton({
+   Name = "KJ Ultimate Variation 2",
+   Callback = function()
+       -- Notifies readiness
+       game.StarterGui:SetCore("SendNotification", {Title="Executing"; Text="Move Successfully Used"; Duration=5;})
+       loadstring(game:HttpGet("https://pastebin.com/raw/pwPfkbXf"))()
+   end
+})
+local InfiniteYieldTab = Window:CreateTab("Settings", nil) -- Title, Image
+local InfiniteYieldSection = InfiniteYieldTab:CreateSection("Themes")
+
+local Button2 = InfiniteYieldTab:CreateButton({
+   Name = "Theme Amber Glow",
+   Callback = function()
+       -- Notifies readiness
+       Theme = "AmberGlow"
+   end
+})
+
+local Button2 = InfiniteYieldTab:CreateButton({
+   Name = "Theme Amethyst",
+   Callback = function()
+       -- Notifies readiness
+       Theme = "Amethyst"
+   end
+})
+
+local Button2 = InfiniteYieldTab:CreateButton({
+   Name = "Theme Bloom",
+   Callback = function()
+       -- Notifies readiness
+       Theme = "Bloom"
+   end
+})
+
+local Button2 = InfiniteYieldTab:CreateButton({
+   Name = "Theme Dark Blue",
+   Callback = function()
+       -- Notifies readiness
+       Theme = "DarkBlue"
+   end
+})
+
+local Button2 = InfiniteYieldTab:CreateButton({
+   Name = "Theme Green",
+   Callback = function()
+       -- Notifies readiness
+       Theme = "Green"
+   end
+})
+
+local Button2 = InfiniteYieldTab:CreateButton({
+   Name = "Theme Light",
+   Callback = function()
+       -- Notifies readiness
+       Theme = "Light"
+   end
+})
+
+local Button2 = InfiniteYieldTab:CreateButton({
+   Name = "Theme Ocean",
+   Callback = function()
+       -- Notifies readiness
+       Theme = "Ocean"
+   end
+})
+
+local Button2 = InfiniteYieldTab:CreateButton({
+   Name = "Theme Serenity",
+   Callback = function()
+       -- Notifies readiness
+       Theme = "Serenity"
+   end
+})
+
