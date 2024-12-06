@@ -1,2 +1,2 @@
-setclipboard("yuhhwupdatewwwsogoodstorgen")
-toclipboard("yuhhwupdatewwwsogoodstorgen")
+setclipboard("loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/Uni%20Hub"))()")
+toclipboard("loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/Uni%20Hub"))()")
