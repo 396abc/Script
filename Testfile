@@ -1,133 +1,201 @@
-local ui = Instance.new("ScreenGui")
-ui.Parent = game.Players.LocalPlayer.PlayerGui
-ui.Name = "SkibidiBypassUI"
+if not game:IsLoaded() then
+    game.Loaded:wait()
+end
 
--- Create the main frame for the UI
-local mainFrame = Instance.new("Frame")
-mainFrame.Parent = ui
-mainFrame.Size = UDim2.new(0, 500, 0, 300)
-mainFrame.Position = UDim2.new(0.5, -250, 0.5, -150)
-mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-mainFrame.BorderSizePixel = 0
+task.wait(5)
 
--- Create the title bar for the UI
-local titleBar = Instance.new("Frame")
-titleBar.Parent = mainFrame
-titleBar.Size = UDim2.new(1, 0, 0, 30)
-titleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+local ACL_LoadTime = tick()
+local NotificationTitle = "UserCreation."
 
--- Title text
-local titleText = Instance.new("TextLabel")
-titleText.Parent = titleBar
-titleText.Size = UDim2.new(1, 0, 1, 0)
-titleText.Text = "Skibidi Bypass (tutorial needed)"
-titleText.TextColor3 = Color3.fromRGB(255, 255, 255)
-titleText.TextSize = 18
-titleText.TextXAlignment = Enum.TextXAlignment.Center
-titleText.BackgroundTransparency = 1
+local OldCoreTypeSettings = {}
+local WhitelistedCoreTypes = {
+    "Chat",
+    "All",
+    Enum.CoreGuiType.Chat,
+    Enum.CoreGuiType.All
+}
 
--- Create the buttons (Minimize, Close)
-local minimizeButton = Instance.new("TextButton")
-minimizeButton.Parent = titleBar
-minimizeButton.Size = UDim2.new(0, 50, 0, 30)
-minimizeButton.Position = UDim2.new(1, -100, 0, 0)
-minimizeButton.Text = "_"
-minimizeButton.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
+local OldCoreSetting = nil
 
-local closeButton = Instance.new("TextButton")
-closeButton.Parent = titleBar
-closeButton.Size = UDim2.new(0, 50, 0, 30)
-closeButton.Position = UDim2.new(1, -50, 0, 0)
-closeButton.Text = "X"
-closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+local CoreGui = game:GetService("CoreGui")
+local StarterGui = game:GetService("StarterGui")
+local TweenService = game:GetService("TweenService")
+local TextChatService = game:GetService("TextChatService")
+local Players = game:GetService("Players")
 
--- Create the textbox for the bypass code
-local bypassTextbox = Instance.new("TextBox")
-bypassTextbox.Parent = mainFrame
-bypassTextbox.Size = UDim2.new(0, 400, 0, 30)
-bypassTextbox.Position = UDim2.new(0.5, -200, 0, 50)
-bypassTextbox.PlaceholderText = "Enter bypass code here"
-bypassTextbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+local Player = Players.LocalPlayer
 
--- Create the Chat button
-local chatButton = Instance.new("TextButton")
-chatButton.Parent = mainFrame
-chatButton.Size = UDim2.new(0, 400, 0, 30)
-chatButton.Position = UDim2.new(0.5, -200, 0, 100)
-chatButton.Text = "Chat"
-chatButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-chatButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+local Notify = function(_Title, _Text, Time)
+    StarterGui:SetCore("SendNotification", {Title = _Title, Text = _Text, Icon = "rbxassetid://2541869220", Duration = Time})
+end
 
--- Function to minimize the UI
-local isMinimized = false
-local function toggleMinimize()
-    if isMinimized then
-        -- Show all UI elements again
-        bypassTextbox.Visible = true
-        chatButton.Visible = true
-        titleBar.Size = UDim2.new(1, 0, 0, 30)
-        mainFrame.Size = UDim2.new(0, 500, 0, 300)
-        isMinimized = false
-    else
-        -- Hide everything except the title bar
-        bypassTextbox.Visible = false
-        chatButton.Visible = false
-        titleBar.Size = UDim2.new(1, 0, 0, 30)
-        mainFrame.Size = UDim2.new(0, 500, 0, 50)  -- Shrink to only show title bar
-        isMinimized = true
+local Tween = function(Object, Time, Style, Direction, Property)
+    return TweenService:Create(Object, TweenInfo.new(Time, Enum.EasingStyle[Style], Enum.EasingDirection[Direction]), Property)
+end
+
+local PlayerGui = Player:FindFirstChildWhichIsA("PlayerGui") do
+    if not PlayerGui then
+        local Timer = tick() + 5
+        repeat task.wait() until Player:FindFirstChildWhichIsA("PlayerGui") or (tick() > Timer)
+        PlayerGui = Player:FindFirstChildWhichIsA("PlayerGui") or false
+        if not PlayerGui then
+            return Notify(NotificationTitle, "Failed to find PlayerGui!", 10)
+        end
     end
 end
-minimizeButton.MouseButton1Click:Connect(toggleMinimize)
 
--- Function to close the UI with a confirmation prompt
-local function confirmClose()
-    local confirmation = Instance.new("Frame")
-    confirmation.Parent = ui
-    confirmation.Size = UDim2.new(0, 200, 0, 100)
-    confirmation.Position = UDim2.new(0.5, -100, 0.5, -50)
-    confirmation.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    confirmation.BorderSizePixel = 0
-    
-    local confirmationText = Instance.new("TextLabel")
-    confirmationText.Parent = confirmation
-    confirmationText.Size = UDim2.new(1, 0, 0.6, 0)
-    confirmationText.Text = "Are you sure you want to close the script?"
-    confirmationText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    confirmationText.TextSize = 14
-    confirmationText.TextXAlignment = Enum.TextXAlignment.Center
-    confirmationText.BackgroundTransparency = 1
-
-    local yesButton = Instance.new("TextButton")
-    yesButton.Parent = confirmation
-    yesButton.Size = UDim2.new(0.5, 0, 0.4, 0)
-    yesButton.Position = UDim2.new(0, 0, 0.6, 0)
-    yesButton.Text = "Yes"
-    yesButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-
-    local noButton = Instance.new("TextButton")
-    noButton.Parent = confirmation
-    noButton.Size = UDim2.new(0.5, 0, 0.4, 0)
-    noButton.Position = UDim2.new(0.5, 0, 0.6, 0)
-    noButton.Text = "No"
-    noButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-    
-    -- If Yes is clicked, close the UI
-    yesButton.MouseButton1Click:Connect(function()
-        ui:Destroy()
-    end)
-    
-    -- If No is clicked, close the confirmation frame
-    noButton.MouseButton1Click:Connect(function()
-        confirmation:Destroy()
-    end)
+if getgenv().AntiChatLogger then
+    return Notify(NotificationTitle, "Anti Chat & Screenshot Logger already loaded!", 15)
+else
+    getgenv().AntiChatLogger = true
 end
 
--- Connecting close button to close confirmation
-closeButton.MouseButton1Click:Connect(confirmClose)
+local Metatable = getrawmetatable(StarterGui)
+setreadonly(Metatable, false)
 
--- Connecting chat button to some functionality (you can replace this with your bypass code logic)
-chatButton.MouseButton1Click:Connect(function()
-    local bypassCode = bypassTextbox.Text
-    print("Bypass code entered: " .. bypassCode)
-    -- Insert your bypass code logic here
+local MessageEvent = Instance.new("BindableEvent")
+
+if hookmetamethod then
+    local CoreHook do
+        CoreHook = hookmetamethod(StarterGui, "__namecall", newcclosure(function(self, ...)
+            local Method = getnamecallmethod()
+            local Arguments = {...}
+            
+            if self == StarterGui and not checkcaller() then
+                if Method == "SetCoreGuiEnabled" then
+                    local CoreType = Arguments[1]
+                    local Enabled = Arguments[2]
+                    
+                    if table.find(WhitelistedCoreTypes, CoreType) and Enabled == false then
+                        OldCoreTypeSettings[CoreType] = Enabled
+                        return
+                    end
+                elseif Method == "SetCore" then
+                    local Core = Arguments[1]
+                    local Connection = Arguments[2]
+                    
+                    if Core == "CoreGuiChatConnections" then
+                        OldCoreSetting = Connection
+                        return
+                    end
+                end
+            end
+            
+            return CoreHook(self, ...)
+        end))
+    end
+end
+
+local EnabledChat = task.spawn(function()
+    repeat
+        StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true)
+        task.wait()
+    until StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType.Chat)
 end)
+
+-- Anti-chat logger and antiban hook setup
+if getgenv().AntiChatLogger then
+    -- (The anti-ban code from the original script, including the metatable manipulations)
+end
+
+-- GUI setup
+local WarningUI = Instance.new("ScreenGui")
+local Main = Instance.new("Frame")
+local BackgroundHolder = Instance.new("Frame")
+local Background = Instance.new("Frame")
+local TopBar = Instance.new("Frame")
+local UIGradient = Instance.new("UIGradient")
+local TitleHolder = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local Holder = Instance.new("Frame")
+local UIListLayout = Instance.new("UIListLayout")
+local Reason_1 = Instance.new("TextLabel")
+local Reason_2 = Instance.new("TextLabel")
+local Reason_3 = Instance.new("TextLabel")
+local WarningText = Instance.new("TextLabel")
+local Exit = Instance.new("TextButton")
+local ImageLabel = Instance.new("ImageLabel")
+
+WarningUI.Name = "WarningUI"
+WarningUI.Parent = CoreGui
+
+-- Set up main UI elements and positioning
+Main.Name = "Main"
+Main.Parent = WarningUI
+Main.AnchorPoint = Vector2.new(.5, .5)
+Main.Position = UDim2.new(.5, 0, .5, 0)
+Main.Size = UDim2.new(0, 400, 0, 400)
+
+BackgroundHolder.Name = "BackgroundHolder"
+BackgroundHolder.Parent = Main
+BackgroundHolder.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+BackgroundHolder.BackgroundTransparency = .25
+BackgroundHolder.BorderSizePixel = 0
+BackgroundHolder.Size = UDim2.new(1, 0, 1, 0)
+
+Background.Name = "Background"
+Background.Parent = BackgroundHolder
+Background.AnchorPoint = Vector2.new(.5, .5)
+Background.Position = UDim2.new(.5, 0, .5, 0)
+Background.Size = UDim2.new(.96, 0, .96, 0)
+
+TopBar.Name = "TopBar"
+TopBar.Parent = Background
+TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TopBar.BorderSizePixel = 0
+TopBar.Size = UDim2.new(1, 0, 0, 2)
+
+UIGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(53, 149, 146)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(159, 159, 80))
+}
+UIGradient.Parent = TopBar
+
+-- Textbox and chat-button setup
+local TextBox = Instance.new("TextBox")
+TextBox.Name = "TextBox"
+TextBox.Parent = Main
+TextBox.Position = UDim2.new(0.5, -100, 0.8, 0)
+TextBox.Size = UDim2.new(0, 200, 0, 40)
+TextBox.Text = "Type something..."
+TextBox.Font = Enum.Font.SourceSans
+TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.TextSize = 18
+TextBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+TextBox.ClearTextOnFocus = false
+
+local ChatButton = Instance.new("TextButton")
+ChatButton.Name = "ChatButton"
+ChatButton.Parent = Main
+ChatButton.Position = UDim2.new(0.5, -100, 0.9, 0)
+ChatButton.Size = UDim2.new(0, 200, 0, 40)
+ChatButton.Text = "Send"
+ChatButton.Font = Enum.Font.SourceSans
+ChatButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ChatButton.TextSize = 18
+ChatButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+
+ChatButton.MouseButton1Click:Connect(function()
+    local message = TextBox.Text
+    -- Send the message through your custom chat system or whatever system you are using
+    print("Message sent: " .. message) -- Debug, replace with actual chat system logic
+end)
+
+Exit.MouseButton1Down:Connect(function()
+    WarningUI:Destroy()
+end)
+
+-- Final cleanup, restore settings
+for _, x in next, OldCoreTypeSettings do
+    if not x then
+        StarterGui:SetCore("ChatActive", false)
+    end
+    StarterGui:SetCoreGuiEnabled(_, x)
+end
+
+if OldCoreSetting then
+    StarterGui:SetCore("CoreGuiChatConnections", OldCoreSetting)
+end
+
+Notify(NotificationTitle, "Loaded successfully.", 15)
+print(string.format("Anti-ban loaded in %s seconds.", string.format("%.2f", tostring(tick() - ACL_LoadTime))))
