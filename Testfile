@@ -1,52 +1,112 @@
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Parent = game:GetService("CoreGui")
+-- Inside the WarningGuiThread where the main GUI is created:
 
-local MainFrame = Instance.new("Frame")
-MainFrame.Parent = ScreenGui
-MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-MainFrame.Size = UDim2.new(0, 400, 0, 400)
-MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-MainFrame.BackgroundTransparency = 0.25
+local Minimize = Instance.new("TextButton") -- Minimize button
+local Close = Instance.new("TextButton") -- Close button
 
--- Create background for the main frame
-local Background = Instance.new("Frame")
-Background.Parent = MainFrame
-Background.Size = UDim2.new(1, 0, 1, 0)
-Background.Position = UDim2.new(0.5, 0, 0.5, 0)
-Background.AnchorPoint = Vector2.new(0.5, 0.5)
+WarningUI = Instance.new("ScreenGui")
+Main = Instance.new("Frame")
+BackgroundHolder = Instance.new("Frame")
+Background = Instance.new("Frame")
+TopBar = Instance.new("Frame")
+UIGradient = Instance.new("UIGradient")
+TitleHolder = Instance.new("Frame")
+Title = Instance.new("TextLabel")
+Holder = Instance.new("Frame")
+UIListLayout = Instance.new("UIListLayout")
+Reason_1 = Instance.new("TextLabel")
+Reason_2 = Instance.new("TextLabel")
+Reason_3 = Instance.new("TextLabel")
+WarningText = Instance.new("TextLabel")
+Exit = Instance.new("TextButton")
+ImageLabel = Instance.new("ImageLabel")
+Minimize.Parent = TopBar
+Close.Parent = TopBar
+
+WarningUI.Enabled = false
+WarningUI.Name = "WarningUI"
+WarningUI.Parent = CoreGui
+
+Main.Name = "Main"
+Main.Parent = WarningUI
+Main.AnchorPoint = Vector2.new(.5, .5)
+Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Main.BackgroundTransparency = 1
+Main.Position = UDim2.new(.5, 0, .5, 0)
+Main.Size = UDim2.new(0, 400, 0, 400)
+
+BackgroundHolder.Name = "BackgroundHolder"
+BackgroundHolder.Parent = Main
+BackgroundHolder.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+BackgroundHolder.BackgroundTransparency = .25
+BackgroundHolder.BorderSizePixel = 0
+BackgroundHolder.Size = UDim2.new(1, 0, 1, 0)
+
+Background.Name = "Background"
+Background.Parent = BackgroundHolder
+Background.AnchorPoint = Vector2.new(.5, .5)
 Background.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Background.BorderSizePixel = 0
+Background.Position = UDim2.new(.5, 0, .5, 0)
+Background.Size = UDim2.new(.96, 0, .96, 0)
 
--- Create close button (X)
-local CloseButton = Instance.new("TextButton")
-CloseButton.Parent = MainFrame
-CloseButton.Size = UDim2.new(0, 50, 0, 50)
-CloseButton.Position = UDim2.new(1, -50, 0, 0)
-CloseButton.Text = "X"
-CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-CloseButton.Font = Enum.Font.SourceSansBold
-CloseButton.TextSize = 30
+TopBar.Name = "TopBar"
+TopBar.Parent = Background
+TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TopBar.BorderSizePixel = 0
+TopBar.Size = UDim2.new(1, 0, 0, 2)
 
--- Create minimize button (-)
-local MinimizeButton = Instance.new("TextButton")
-MinimizeButton.Parent = MainFrame
-MinimizeButton.Size = UDim2.new(0, 50, 0, 50)
-MinimizeButton.Position = UDim2.new(1, -100, 0, 0)
-MinimizeButton.Text = "-"
-MinimizeButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-MinimizeButton.Font = Enum.Font.SourceSansBold
-MinimizeButton.TextSize = 30
+UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(53, 149, 146)), ColorSequenceKeypoint.new(.29, Color3.fromRGB(93, 86, 141)), ColorSequenceKeypoint.new(.50, Color3.fromRGB(126, 64, 138)), ColorSequenceKeypoint.new(.75, Color3.fromRGB(143, 112, 112)), ColorSequenceKeypoint.new(1, Color3.fromRGB(159, 159, 80))}
+UIGradient.Parent = TopBar
 
--- Function to close the GUI when X is clicked
-CloseButton.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()  -- Close the GUI
+-- Add minimize button setup
+Minimize.Name = "Minimize"
+Minimize.Parent = TopBar
+Minimize.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+Minimize.Position = UDim2.new(1, -30, 0, 0)
+Minimize.Size = UDim2.new(0, 30, 0, 20)
+Minimize.Font = Enum.Font.SourceSans
+Minimize.Text = "-"
+Minimize.TextColor3 = Color3.fromRGB(255, 255, 255)
+Minimize.TextScaled = true
+Minimize.TextWrapped = true
+
+-- Add close button setup
+Close.Name = "Close"
+Close.Parent = TopBar
+Close.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+Close.Position = UDim2.new(1, -60, 0, 0)
+Close.Size = UDim2.new(0, 30, 0, 20)
+Close.Font = Enum.Font.SourceSans
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close.TextScaled = true
+Close.TextWrapped = true
+
+-- Add functionality for the minimize button
+Minimize.MouseButton1Click:Connect(function()
+    Main.Visible = not Main.Visible  -- Toggle visibility of the main frame
 end)
 
--- Function to minimize the GUI when - is clicked
-MinimizeButton.MouseButton1Click:Connect(function()
-    MainFrame.Size = UDim2.new(0, 50, 0, 50)  -- Minimize to a smaller size
-    wait(0.5)  -- Wait a moment before maximizing
-    MainFrame.Size = UDim2.new(0, 400, 0, 400)  -- Restore the original size
+-- Add functionality for the close button
+Close.MouseButton1Click:Connect(function()
+    WarningUI:Destroy()  -- Destroy the entire GUI when clicked
+end)
+
+-- Existing elements (such as Title, Exit, and ImageLabel) remain the same...
+Exit.Name = "Exit"
+Exit.Parent = TitleHolder
+Exit.AnchorPoint = Vector2.new(.5, .5)
+Exit.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+Exit.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Exit.Position = UDim2.new(.5, 0, .899999976, 0)
+Exit.Size = UDim2.new(0, 250, 0, 20)
+Exit.Font = Enum.Font.SourceSans
+Exit.Text = "Ok"
+Exit.TextColor3 = Color3.fromRGB(255, 255, 255)
+Exit.TextScaled = true
+Exit.TextWrapped = true
+
+-- Exiting the GUI when clicking the Ok button
+Exit.MouseButton1Down:Connect(function()
+    WarningUI:Destroy()
 end)
