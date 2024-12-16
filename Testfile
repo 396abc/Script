@@ -1,85 +1,52 @@
-local Players = game:GetService("Players")
-local StarterGui = game:GetService("StarterGui")
-local CoreGui = game:GetService("CoreGui")
-local TweenService = game:GetService("TweenService")
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game:GetService("CoreGui")
 
-local Player = Players.LocalPlayer
-local PlayerGui = Player:WaitForChild("PlayerGui")
+local MainFrame = Instance.new("Frame")
+MainFrame.Parent = ScreenGui
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+MainFrame.Size = UDim2.new(0, 400, 0, 400)
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.BackgroundTransparency = 0.25
 
--- Set up the GUI to appear in the center
-local function createCenteredGUI()
-    local WarningUI = Instance.new("ScreenGui")
-    WarningUI.Parent = CoreGui
+-- Create background for the main frame
+local Background = Instance.new("Frame")
+Background.Parent = MainFrame
+Background.Size = UDim2.new(1, 0, 1, 0)
+Background.Position = UDim2.new(0.5, 0, 0.5, 0)
+Background.AnchorPoint = Vector2.new(0.5, 0.5)
+Background.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 
-    local Main = Instance.new("Frame")
-    Main.AnchorPoint = Vector2.new(0.5, 0.5)
-    Main.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Main.Size = UDim2.new(0, 400, 0, 400)
-    Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Main.BackgroundTransparency = 1
-    Main.Parent = WarningUI
+-- Create close button (X)
+local CloseButton = Instance.new("TextButton")
+CloseButton.Parent = MainFrame
+CloseButton.Size = UDim2.new(0, 50, 0, 50)
+CloseButton.Position = UDim2.new(1, -50, 0, 0)
+CloseButton.Text = "X"
+CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.Font = Enum.Font.SourceSansBold
+CloseButton.TextSize = 30
 
-    local BackgroundHolder = Instance.new("Frame")
-    BackgroundHolder.Size = UDim2.new(1, 0, 1, 0)
-    BackgroundHolder.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    BackgroundHolder.BackgroundTransparency = 0.25
-    BackgroundHolder.Parent = Main
+-- Create minimize button (-)
+local MinimizeButton = Instance.new("TextButton")
+MinimizeButton.Parent = MainFrame
+MinimizeButton.Size = UDim2.new(0, 50, 0, 50)
+MinimizeButton.Position = UDim2.new(1, -100, 0, 0)
+MinimizeButton.Text = "-"
+MinimizeButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeButton.Font = Enum.Font.SourceSansBold
+MinimizeButton.TextSize = 30
 
-    -- Add other components as before...
-    -- For example, a top bar
-    local TopBar = Instance.new("Frame")
-    TopBar.Size = UDim2.new(1, 0, 0, 2)
-    TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TopBar.Parent = BackgroundHolder
+-- Function to close the GUI when X is clicked
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()  -- Close the GUI
+end)
 
-    -- Gradient
-    local UIGradient = Instance.new("UIGradient")
-    UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(53, 149, 146)), ColorSequenceKeypoint.new(1, Color3.fromRGB(159, 159, 80))}
-    UIGradient.Parent = TopBar
-
-    -- Title for the warning
-    local TitleHolder = Instance.new("Frame")
-    TitleHolder.Size = UDim2.new(0.9, 0, 0.9, 0)
-    TitleHolder.Position = UDim2.new(0.5, 0, 0.5, 0)
-    TitleHolder.AnchorPoint = Vector2.new(0.5, 0.5)
-    TitleHolder.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    TitleHolder.BorderColor3 = Color3.fromRGB(44, 44, 44)
-    TitleHolder.BorderSizePixel = 2
-    TitleHolder.Parent = BackgroundHolder
-
-    local Title = Instance.new("TextLabel")
-    Title.Text = "Warning"
-    Title.Size = UDim2.new(0, 75, 0, 20)
-    Title.Position = UDim2.new(0, 15, 0, -12)
-    Title.TextScaled = true
-    Title.TextColor3 = Color3.fromRGB(235, 235, 235)
-    Title.Font = Enum.Font.SourceSansBold
-    Title.Parent = TitleHolder
-
-    -- Exit button
-    local Exit = Instance.new("TextButton")
-    Exit.Text = "Ok"
-    Exit.Size = UDim2.new(0, 250, 0, 20)
-    Exit.Position = UDim2.new(0.5, 0, 0.9, 0)
-    Exit.AnchorPoint = Vector2.new(0.5, 0.5)
-    Exit.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
-    Exit.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Exit.Font = Enum.Font.SourceSans
-    Exit.TextScaled = true
-    Exit.Parent = TitleHolder
-    Exit.MouseButton1Down:Connect(function()
-        WarningUI:Destroy()  -- Close the warning on button click
-    end)
-
-    -- Optional: You can add any text or other components here
-    local WarningText = Instance.new("TextLabel")
-    WarningText.Text = "> Anti-<font color=\"#6ea644\">Chat Logger</font> will not work here!"
-    WarningText.Size = UDim2.new(1, -30, 0, 20)
-    WarningText.Position = UDim2.new(0, 30, 0.05, 0)
-    WarningText.RichText = true
-    WarningText.TextScaled = true
-    WarningText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    WarningText.Parent = TitleHolder
-end
-
-createCenteredGUI()
+-- Function to minimize the GUI when - is clicked
+MinimizeButton.MouseButton1Click:Connect(function()
+    MainFrame.Size = UDim2.new(0, 50, 0, 50)  -- Minimize to a smaller size
+    wait(0.5)  -- Wait a moment before maximizing
+    MainFrame.Size = UDim2.new(0, 400, 0, 400)  -- Restore the original size
+end)
