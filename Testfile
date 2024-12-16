@@ -1,194 +1,130 @@
-local WarningGuiThread = task.spawn(function()
-    WarningUI = Instance.new("ScreenGui")
-    Main = Instance.new("Frame")
-    Background = Instance.new("Frame")
-    TopBar = Instance.new("Frame")
-    Title = Instance.new("TextLabel")
-    CloseButton = Instance.new("TextButton")
-    MinimizeButton = Instance.new("TextButton")
-    Holder = Instance.new("Frame")
-    UIListLayout = Instance.new("UIListLayout")
-    Credits = Instance.new("TextLabel")
-    TextBox = Instance.new("TextBox")
-    ChatButton = Instance.new("TextButton")
+local Player = game.Players.LocalPlayer
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = Player:WaitForChild("PlayerGui")
 
-    local Tween = function(Object, Time, Style, Direction, Property)
-        return TweenService:Create(Object, TweenInfo.new(Time, Enum.EasingStyle[Style], Enum.EasingDirection[Direction]), Property)
-    end
+-- Main frame setup
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 600, 0, 400)
+mainFrame.Position = UDim2.new(0.5, -300, 0.5, -200)
+mainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+mainFrame.BackgroundTransparency = 0.1
+mainFrame.BorderSizePixel = 0
+mainFrame.Parent = ScreenGui
+mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+mainFrame.ClipsDescendants = true
 
-    -- Create the screen GUI
-    WarningUI.Enabled = false
-    WarningUI.Name = "WarningUI"
-    WarningUI.Parent = CoreGui
+-- Adding rounded corners to the main frame
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 12)
+UICorner.Parent = mainFrame
 
-    -- Main Frame
-    Main.Name = "Main"
-    Main.Parent = WarningUI
-    Main.AnchorPoint = Vector2.new(.5, .5)
-    Main.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    Main.BackgroundTransparency = 0
-    Main.BorderSizePixel = 0
-    Main.Position = UDim2.new(.5, 0, .5, 0)
-    Main.Size = UDim2.new(0, 400, 0, 250)
+-- Top bar for controls
+local topBar = Instance.new("Frame")
+topBar.Size = UDim2.new(1, 0, 0, 50)
+topBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+topBar.BorderSizePixel = 0
+topBar.Parent = mainFrame
 
-    -- Rounded corners for Main
-    local UICorner = Instance.new("UICorner")
-    UICorner.CornerRadius = UDim.new(0, 10)
-    UICorner.Parent = Main
+-- Adding rounded corners to the top bar
+local topUICorner = Instance.new("UICorner")
+topUICorner.CornerRadius = UDim.new(0, 12)
+topUICorner.Parent = topBar
 
-    -- Background Frame
-    Background.Name = "Background"
-    Background.Parent = Main
-    Background.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    Background.BorderSizePixel = 0
-    Background.Size = UDim2.new(1, 0, .85, 0)
+-- Title
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(0, 400, 1, 0)
+title.Position = UDim2.new(0.5, -200, 0, 0)
+title.BackgroundTransparency = 1
+title.Text = "Skibidi Bypass (tutorial needed)"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextSize = 18
+title.TextFont = Enum.Font.GothamBold
+title.TextXAlignment = Enum.TextXAlignment.Center
+title.Parent = topBar
 
-    -- Rounded corners for Background
-    local BackgroundCorner = Instance.new("UICorner")
-    BackgroundCorner.CornerRadius = UDim.new(0, 8)
-    BackgroundCorner.Parent = Background
+-- Close button (X)
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 50, 1, 0)
+closeButton.Position = UDim2.new(1, -50, 0, 0)
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+closeButton.Text = "X"
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.TextSize = 20
+closeButton.Parent = topBar
+closeButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
 
-    -- TopBar
-    TopBar.Name = "TopBar"
-    TopBar.Parent = Main
-    TopBar.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    TopBar.Size = UDim2.new(1, 0, .15, 0)
+-- Minimize button (-)
+local minimizeButton = Instance.new("TextButton")
+minimizeButton.Size = UDim2.new(0, 50, 1, 0)
+minimizeButton.Position = UDim2.new(1, -100, 0, 0)
+minimizeButton.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
+minimizeButton.Text = "-"
+minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+minimizeButton.TextSize = 20
+minimizeButton.Parent = topBar
+minimizeButton.MouseButton1Click:Connect(function()
+    mainFrame.Visible = not mainFrame.Visible
+end)
 
-    -- Close Button (X)
-    CloseButton.Name = "CloseButton"
-    CloseButton.Parent = TopBar
-    CloseButton.AnchorPoint = Vector2.new(1, 0)
-    CloseButton.Position = UDim2.new(1, -5, 0, 5)
-    CloseButton.Size = UDim2.new(0, 25, 0, 25)
-    CloseButton.Text = "X"
-    CloseButton.Font = Enum.Font.SourceSansBold
-    CloseButton.TextColor3 = Color3.fromRGB(255, 0, 0)
-    CloseButton.TextScaled = true
-    CloseButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    CloseButton.BorderSizePixel = 0
+-- Credits label
+local creditsLabel = Instance.new("TextLabel")
+creditsLabel.Size = UDim2.new(0, 200, 1, 0)
+creditsLabel.Position = UDim2.new(0, 10, 0, 0)
+creditsLabel.BackgroundTransparency = 1
+creditsLabel.Text = "Credits: 396abc"
+creditsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+creditsLabel.TextSize = 14
+creditsLabel.TextFont = Enum.Font.Gotham
+creditsLabel.TextXAlignment = Enum.TextXAlignment.Left
+creditsLabel.Parent = topBar
 
-    local CloseCorner = Instance.new("UICorner")
-    CloseCorner.CornerRadius = UDim.new(0, 5)
-    CloseCorner.Parent = CloseButton
+-- Bypass feature textbox
+local bypassTextbox = Instance.new("TextBox")
+bypassTextbox.Size = UDim2.new(0, 500, 0, 40)
+bypassTextbox.Position = UDim2.new(0.5, -250, 0.25, -20)
+bypassTextbox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+bypassTextbox.BackgroundTransparency = 0.2
+bypassTextbox.Text = "Skibidi Bypass (tutorial needed)"
+bypassTextbox.TextColor3 = Color3.fromRGB(255, 255, 255)
+bypassTextbox.TextSize = 18
+bypassTextbox.TextFont = Enum.Font.Gotham
+bypassTextbox.ClearTextOnFocus = false
+bypassTextbox.Parent = mainFrame
 
-    -- Rewiring Close Button Functionality
-    CloseButton.MouseButton1Click:Connect(function()
-        local FadeOut = Tween(Main, 0.5, "Sine", "Out", {BackgroundTransparency = 1})
-        FadeOut:Play()
-        FadeOut.Completed:Connect(function()
-            WarningUI:Destroy()
-        end)
-    end)
+-- Adding rounded corners to the bypass textbox
+local bypassTextboxUICorner = Instance.new("UICorner")
+bypassTextboxUICorner.CornerRadius = UDim.new(0, 8)
+bypassTextboxUICorner.Parent = bypassTextbox
 
-    -- Minimize Button (-)
-    MinimizeButton.Name = "MinimizeButton"
-    MinimizeButton.Parent = TopBar
-    MinimizeButton.AnchorPoint = Vector2.new(1, 0)
-    MinimizeButton.Position = UDim2.new(1, -35, 0, 5)
-    MinimizeButton.Size = UDim2.new(0, 25, 0, 25)
-    MinimizeButton.Text = "-"
-    MinimizeButton.Font = Enum.Font.SourceSansBold
-    MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    MinimizeButton.TextScaled = true
-    MinimizeButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    MinimizeButton.BorderSizePixel = 0
+-- Chat button
+local chatButton = Instance.new("TextButton")
+chatButton.Size = UDim2.new(0, 200, 0, 40)
+chatButton.Position = UDim2.new(0.5, -100, 0.75, -20)
+chatButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+chatButton.Text = "Chat"
+chatButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+chatButton.TextSize = 18
+chatButton.TextFont = Enum.Font.GothamBold
+chatButton.Parent = mainFrame
+chatButton.MouseButton1Click:Connect(function()
+    -- Insert functionality for the chat button here (rewiring it to old function)
+    print("Chat button clicked")
+end)
 
-    local MinimizeCorner = Instance.new("UICorner")
-    MinimizeCorner.CornerRadius = UDim.new(0, 5)
-    MinimizeCorner.Parent = MinimizeButton
+-- Adding rounded corners to the chat button
+local chatButtonUICorner = Instance.new("UICorner")
+chatButtonUICorner.CornerRadius = UDim.new(0, 8)
+chatButtonUICorner.Parent = chatButton
 
-    local Minimized = false
-    MinimizeButton.MouseButton1Click:Connect(function()
-        if Minimized then
-            Main:TweenSize(UDim2.new(0, 400, 0, 250), "Out", "Sine", 0.5)
-            Minimized = false
-        else
-            Main:TweenSize(UDim2.new(0, 400, 0, 50), "Out", "Sine", 0.5)
-            Minimized = true
-        end
-    end)
+-- Fade-in effect for the GUI
+mainFrame.BackgroundTransparency = 1
+game:GetService("TweenService"):Create(mainFrame, TweenInfo.new(1), {BackgroundTransparency = 0.1}):Play()
 
-    -- Title
-    Title.Name = "Title"
-    Title.Parent = TopBar
-    Title.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    Title.BackgroundTransparency = 1
-    Title.Position = UDim2.new(0, 5, 0, 5)
-    Title.Size = UDim2.new(0, 150, 0, 25)
-    Title.Font = Enum.Font.SourceSansBold
-    Title.Text = "Warning UI"
-    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Title.TextScaled = true
-
-    -- Holder for Chat and TextBox
-    Holder.Name = "Holder"
-    Holder.Parent = Background
-    Holder.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    Holder.BackgroundTransparency = 1
-    Holder.Position = UDim2.new(0, 10, 0.1, 0)
-    Holder.Size = UDim2.new(1, -20, 0.75, 0)
-
-    UIListLayout.Parent = Holder
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout.Padding = UDim.new(0, 10)
-
-    -- Text Box
-    TextBox.Name = "TextBox"
-    TextBox.Parent = Holder
-    TextBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    TextBox.BorderSizePixel = 0
-    TextBox.Size = UDim2.new(1, 0, 0, 50)
-    TextBox.Font = Enum.Font.SourceSans
-    TextBox.PlaceholderText = "Enter something here..."
-    TextBox.Text = ""
-    TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TextBox.TextScaled = true
-
-    local TextBoxCorner = Instance.new("UICorner")
-    TextBoxCorner.CornerRadius = UDim.new(0, 5)
-    TextBoxCorner.Parent = TextBox
-
-    -- Chat Button
-    ChatButton.Name = "ChatButton"
-    ChatButton.Parent = Holder
-    ChatButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    ChatButton.BorderSizePixel = 0
-    ChatButton.Size = UDim2.new(1, 0, 0, 50)
-    ChatButton.Font = Enum.Font.SourceSansBold
-    ChatButton.Text = "Open Chat"
-    ChatButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ChatButton.TextScaled = true
-
-    local ChatButtonCorner = Instance.new("UICorner")
-    ChatButtonCorner.CornerRadius = UDim.new(0, 5)
-    ChatButtonCorner.Parent = ChatButton
-
-    -- Rewiring Chat Button Functionality
-    ChatButton.MouseButton1Click:Connect(function()
-        -- Call the existing chat logic here (replace with actual code)
-        print("Chat Button Pressed")
-    end)
-
-    -- Credits
-    Credits.Name = "Credits"
-    Credits.Parent = Background
-    Credits.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    Credits.BackgroundTransparency = 1
-    Credits.Position = UDim2.new(0, 10, .9, 0)
-    Credits.Size = UDim2.new(1, -20, 0, 20)
-    Credits.Font = Enum.Font.SourceSans
-    Credits.Text = "Credits to 396abc"
-    Credits.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Credits.TextScaled = true
-    Credits.TextXAlignment = Enum.TextXAlignment.Right
-
-    -- Fade-In Animation
-    Main.BackgroundTransparency = 1
-    local FadeIn = Tween(Main, 0.5, "Sine", "In", {BackgroundTransparency = 0})
-    FadeIn:Play()
-
-    -- Fix for original exit button
-    Exit.MouseButton1Click:Connect(function()
-        WarningUI:Destroy()
-    end)
+-- Optional: Fade-out when closing
+closeButton.MouseButton1Click:Connect(function()
+    game:GetService("TweenService"):Create(mainFrame, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+    wait(1)
+    ScreenGui:Destroy()
 end)
