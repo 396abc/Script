@@ -1,83 +1,133 @@
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "NewUI"
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local ui = Instance.new("ScreenGui")
+ui.Parent = game.Players.LocalPlayer.PlayerGui
+ui.Name = "SkibidiBypassUI"
 
--- Main Frame
+-- Create the main frame for the UI
 local mainFrame = Instance.new("Frame")
-mainFrame.Name = "MainFrame"
-mainFrame.Size = UDim2.new(0, 400, 0, 300)
-mainFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
+mainFrame.Parent = ui
+mainFrame.Size = UDim2.new(0, 500, 0, 300)
+mainFrame.Position = UDim2.new(0.5, -250, 0.5, -150)
 mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-mainFrame.BackgroundTransparency = 0.3
-mainFrame.Parent = ScreenGui
+mainFrame.BorderSizePixel = 0
 
--- Title Bar
+-- Create the title bar for the UI
 local titleBar = Instance.new("Frame")
-titleBar.Name = "TitleBar"
-titleBar.Size = UDim2.new(1, 0, 0, 30)
-titleBar.Position = UDim2.new(0, 0, 0, 0)
-titleBar.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-titleBar.BackgroundTransparency = 0.6
 titleBar.Parent = mainFrame
+titleBar.Size = UDim2.new(1, 0, 0, 30)
+titleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 
--- Close Button
-local closeButton = Instance.new("TextButton")
-closeButton.Size = UDim2.new(0, 30, 0, 30)
-closeButton.Position = UDim2.new(1, -35, 0, 0)
-closeButton.Text = "X"
-closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-closeButton.Parent = titleBar
-
-closeButton.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
-end)
-
--- Minimize Button
-local minimizeButton = Instance.new("TextButton")
-minimizeButton.Size = UDim2.new(0, 30, 0, 30)
-minimizeButton.Position = UDim2.new(1, -70, 0, 0)
-minimizeButton.Text = "-"
-minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-minimizeButton.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
-minimizeButton.Parent = titleBar
-
--- Title Text
+-- Title text
 local titleText = Instance.new("TextLabel")
-titleText.Size = UDim2.new(1, -80, 1, 0)
-titleText.Position = UDim2.new(0, 10, 0, 0)
+titleText.Parent = titleBar
+titleText.Size = UDim2.new(1, 0, 1, 0)
 titleText.Text = "Skibidi Bypass (tutorial needed)"
 titleText.TextColor3 = Color3.fromRGB(255, 255, 255)
-titleText.TextSize = 14
+titleText.TextSize = 18
+titleText.TextXAlignment = Enum.TextXAlignment.Center
 titleText.BackgroundTransparency = 1
-titleText.Parent = titleBar
 
--- Bypass Textbox
+-- Create the buttons (Minimize, Close)
+local minimizeButton = Instance.new("TextButton")
+minimizeButton.Parent = titleBar
+minimizeButton.Size = UDim2.new(0, 50, 0, 30)
+minimizeButton.Position = UDim2.new(1, -100, 0, 0)
+minimizeButton.Text = "_"
+minimizeButton.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
+
+local closeButton = Instance.new("TextButton")
+closeButton.Parent = titleBar
+closeButton.Size = UDim2.new(0, 50, 0, 30)
+closeButton.Position = UDim2.new(1, -50, 0, 0)
+closeButton.Text = "X"
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+
+-- Create the textbox for the bypass code
 local bypassTextbox = Instance.new("TextBox")
-bypassTextbox.Size = UDim2.new(0, 360, 0, 30)
-bypassTextbox.Position = UDim2.new(0, 20, 0, 50)
-bypassTextbox.Text = "Enter bypass code here"
-bypassTextbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-bypassTextbox.TextColor3 = Color3.fromRGB(0, 0, 0)
-bypassTextbox.ClearTextOnFocus = true
 bypassTextbox.Parent = mainFrame
+bypassTextbox.Size = UDim2.new(0, 400, 0, 30)
+bypassTextbox.Position = UDim2.new(0.5, -200, 0, 50)
+bypassTextbox.PlaceholderText = "Enter bypass code here"
+bypassTextbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 
--- Chat Button
+-- Create the Chat button
 local chatButton = Instance.new("TextButton")
-chatButton.Size = UDim2.new(0, 360, 0, 50)
-chatButton.Position = UDim2.new(0, 20, 0, 100)
+chatButton.Parent = mainFrame
+chatButton.Size = UDim2.new(0, 400, 0, 30)
+chatButton.Position = UDim2.new(0.5, -200, 0, 100)
 chatButton.Text = "Chat"
 chatButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 chatButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-chatButton.Parent = mainFrame
 
--- Function to handle chat
+-- Function to minimize the UI
+local isMinimized = false
+local function toggleMinimize()
+    if isMinimized then
+        -- Show all UI elements again
+        bypassTextbox.Visible = true
+        chatButton.Visible = true
+        titleBar.Size = UDim2.new(1, 0, 0, 30)
+        mainFrame.Size = UDim2.new(0, 500, 0, 300)
+        isMinimized = false
+    else
+        -- Hide everything except the title bar
+        bypassTextbox.Visible = false
+        chatButton.Visible = false
+        titleBar.Size = UDim2.new(1, 0, 0, 30)
+        mainFrame.Size = UDim2.new(0, 500, 0, 50)  -- Shrink to only show title bar
+        isMinimized = true
+    end
+end
+minimizeButton.MouseButton1Click:Connect(toggleMinimize)
+
+-- Function to close the UI with a confirmation prompt
+local function confirmClose()
+    local confirmation = Instance.new("Frame")
+    confirmation.Parent = ui
+    confirmation.Size = UDim2.new(0, 200, 0, 100)
+    confirmation.Position = UDim2.new(0.5, -100, 0.5, -50)
+    confirmation.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    confirmation.BorderSizePixel = 0
+    
+    local confirmationText = Instance.new("TextLabel")
+    confirmationText.Parent = confirmation
+    confirmationText.Size = UDim2.new(1, 0, 0.6, 0)
+    confirmationText.Text = "Are you sure you want to close the script?"
+    confirmationText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    confirmationText.TextSize = 14
+    confirmationText.TextXAlignment = Enum.TextXAlignment.Center
+    confirmationText.BackgroundTransparency = 1
+
+    local yesButton = Instance.new("TextButton")
+    yesButton.Parent = confirmation
+    yesButton.Size = UDim2.new(0.5, 0, 0.4, 0)
+    yesButton.Position = UDim2.new(0, 0, 0.6, 0)
+    yesButton.Text = "Yes"
+    yesButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+
+    local noButton = Instance.new("TextButton")
+    noButton.Parent = confirmation
+    noButton.Size = UDim2.new(0.5, 0, 0.4, 0)
+    noButton.Position = UDim2.new(0.5, 0, 0.6, 0)
+    noButton.Text = "No"
+    noButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    
+    -- If Yes is clicked, close the UI
+    yesButton.MouseButton1Click:Connect(function()
+        ui:Destroy()
+    end)
+    
+    -- If No is clicked, close the confirmation frame
+    noButton.MouseButton1Click:Connect(function()
+        confirmation:Destroy()
+    end)
+end
+
+-- Connecting close button to close confirmation
+closeButton.MouseButton1Click:Connect(confirmClose)
+
+-- Connecting chat button to some functionality (you can replace this with your bypass code logic)
 chatButton.MouseButton1Click:Connect(function()
-    local bypassText = bypassTextbox.Text
-    print("Chat button clicked with bypass text: " .. bypassText)
-    -- Insert your old chat button functionality here
-    -- This will send the bypassText or execute whatever function the old button had
+    local bypassCode = bypassTextbox.Text
+    print("Bypass code entered: " .. bypassCode)
+    -- Insert your bypass code logic here
 end)
-
--- Ensure the new UI is visible
-ScreenGui.Enabled = true
