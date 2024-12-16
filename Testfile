@@ -52,6 +52,7 @@ closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeButton.TextSize = 20
 closeButton.Parent = topBar
 closeButton.MouseButton1Click:Connect(function()
+    -- Close the GUI when clicked
     ScreenGui:Destroy()
 end)
 
@@ -65,6 +66,7 @@ minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 minimizeButton.TextSize = 20
 minimizeButton.Parent = topBar
 minimizeButton.MouseButton1Click:Connect(function()
+    -- Toggle visibility when minimize is clicked
     mainFrame.Visible = not mainFrame.Visible
 end)
 
@@ -109,8 +111,9 @@ chatButton.TextSize = 18
 chatButton.TextFont = Enum.Font.GothamBold
 chatButton.Parent = mainFrame
 chatButton.MouseButton1Click:Connect(function()
-    -- Insert functionality for the chat button here (rewiring it to old function)
+    -- Functionality for the chat button (rewired to the old code)
     print("Chat button clicked")
+    -- Here you can include the old functionality code for the chat button
 end)
 
 -- Adding rounded corners to the chat button
