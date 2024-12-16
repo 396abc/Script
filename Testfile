@@ -1,201 +1,85 @@
-if not game:IsLoaded() then
-    game.Loaded:wait()
-end
-
-task.wait(5)
-
-local ACL_LoadTime = tick()
-local NotificationTitle = "UserCreation."
-
-local OldCoreTypeSettings = {}
-local WhitelistedCoreTypes = {
-    "Chat",
-    "All",
-    Enum.CoreGuiType.Chat,
-    Enum.CoreGuiType.All
-}
-
-local OldCoreSetting = nil
-
-local CoreGui = game:GetService("CoreGui")
-local StarterGui = game:GetService("StarterGui")
-local TweenService = game:GetService("TweenService")
-local TextChatService = game:GetService("TextChatService")
 local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local CoreGui = game:GetService("CoreGui")
+local TweenService = game:GetService("TweenService")
 
 local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
 
-local Notify = function(_Title, _Text, Time)
-    StarterGui:SetCore("SendNotification", {Title = _Title, Text = _Text, Icon = "rbxassetid://2541869220", Duration = Time})
+-- Set up the GUI to appear in the center
+local function createCenteredGUI()
+    local WarningUI = Instance.new("ScreenGui")
+    WarningUI.Parent = CoreGui
+
+    local Main = Instance.new("Frame")
+    Main.AnchorPoint = Vector2.new(0.5, 0.5)
+    Main.Position = UDim2.new(0.5, 0, 0.5, 0)
+    Main.Size = UDim2.new(0, 400, 0, 400)
+    Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Main.BackgroundTransparency = 1
+    Main.Parent = WarningUI
+
+    local BackgroundHolder = Instance.new("Frame")
+    BackgroundHolder.Size = UDim2.new(1, 0, 1, 0)
+    BackgroundHolder.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    BackgroundHolder.BackgroundTransparency = 0.25
+    BackgroundHolder.Parent = Main
+
+    -- Add other components as before...
+    -- For example, a top bar
+    local TopBar = Instance.new("Frame")
+    TopBar.Size = UDim2.new(1, 0, 0, 2)
+    TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TopBar.Parent = BackgroundHolder
+
+    -- Gradient
+    local UIGradient = Instance.new("UIGradient")
+    UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(53, 149, 146)), ColorSequenceKeypoint.new(1, Color3.fromRGB(159, 159, 80))}
+    UIGradient.Parent = TopBar
+
+    -- Title for the warning
+    local TitleHolder = Instance.new("Frame")
+    TitleHolder.Size = UDim2.new(0.9, 0, 0.9, 0)
+    TitleHolder.Position = UDim2.new(0.5, 0, 0.5, 0)
+    TitleHolder.AnchorPoint = Vector2.new(0.5, 0.5)
+    TitleHolder.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    TitleHolder.BorderColor3 = Color3.fromRGB(44, 44, 44)
+    TitleHolder.BorderSizePixel = 2
+    TitleHolder.Parent = BackgroundHolder
+
+    local Title = Instance.new("TextLabel")
+    Title.Text = "Warning"
+    Title.Size = UDim2.new(0, 75, 0, 20)
+    Title.Position = UDim2.new(0, 15, 0, -12)
+    Title.TextScaled = true
+    Title.TextColor3 = Color3.fromRGB(235, 235, 235)
+    Title.Font = Enum.Font.SourceSansBold
+    Title.Parent = TitleHolder
+
+    -- Exit button
+    local Exit = Instance.new("TextButton")
+    Exit.Text = "Ok"
+    Exit.Size = UDim2.new(0, 250, 0, 20)
+    Exit.Position = UDim2.new(0.5, 0, 0.9, 0)
+    Exit.AnchorPoint = Vector2.new(0.5, 0.5)
+    Exit.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+    Exit.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Exit.Font = Enum.Font.SourceSans
+    Exit.TextScaled = true
+    Exit.Parent = TitleHolder
+    Exit.MouseButton1Down:Connect(function()
+        WarningUI:Destroy()  -- Close the warning on button click
+    end)
+
+    -- Optional: You can add any text or other components here
+    local WarningText = Instance.new("TextLabel")
+    WarningText.Text = "> Anti-<font color=\"#6ea644\">Chat Logger</font> will not work here!"
+    WarningText.Size = UDim2.new(1, -30, 0, 20)
+    WarningText.Position = UDim2.new(0, 30, 0.05, 0)
+    WarningText.RichText = true
+    WarningText.TextScaled = true
+    WarningText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    WarningText.Parent = TitleHolder
 end
 
-local Tween = function(Object, Time, Style, Direction, Property)
-    return TweenService:Create(Object, TweenInfo.new(Time, Enum.EasingStyle[Style], Enum.EasingDirection[Direction]), Property)
-end
-
-local PlayerGui = Player:FindFirstChildWhichIsA("PlayerGui") do
-    if not PlayerGui then
-        local Timer = tick() + 5
-        repeat task.wait() until Player:FindFirstChildWhichIsA("PlayerGui") or (tick() > Timer)
-        PlayerGui = Player:FindFirstChildWhichIsA("PlayerGui") or false
-        if not PlayerGui then
-            return Notify(NotificationTitle, "Failed to find PlayerGui!", 10)
-        end
-    end
-end
-
-if getgenv().AntiChatLogger then
-    return Notify(NotificationTitle, "Anti Chat & Screenshot Logger already loaded!", 15)
-else
-    getgenv().AntiChatLogger = true
-end
-
-local Metatable = getrawmetatable(StarterGui)
-setreadonly(Metatable, false)
-
-local MessageEvent = Instance.new("BindableEvent")
-
-if hookmetamethod then
-    local CoreHook do
-        CoreHook = hookmetamethod(StarterGui, "__namecall", newcclosure(function(self, ...)
-            local Method = getnamecallmethod()
-            local Arguments = {...}
-            
-            if self == StarterGui and not checkcaller() then
-                if Method == "SetCoreGuiEnabled" then
-                    local CoreType = Arguments[1]
-                    local Enabled = Arguments[2]
-                    
-                    if table.find(WhitelistedCoreTypes, CoreType) and Enabled == false then
-                        OldCoreTypeSettings[CoreType] = Enabled
-                        return
-                    end
-                elseif Method == "SetCore" then
-                    local Core = Arguments[1]
-                    local Connection = Arguments[2]
-                    
-                    if Core == "CoreGuiChatConnections" then
-                        OldCoreSetting = Connection
-                        return
-                    end
-                end
-            end
-            
-            return CoreHook(self, ...)
-        end))
-    end
-end
-
-local EnabledChat = task.spawn(function()
-    repeat
-        StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true)
-        task.wait()
-    until StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType.Chat)
-end)
-
--- Anti-chat logger and antiban hook setup
-if getgenv().AntiChatLogger then
-    -- (The anti-ban code from the original script, including the metatable manipulations)
-end
-
--- GUI setup
-local WarningUI = Instance.new("ScreenGui")
-local Main = Instance.new("Frame")
-local BackgroundHolder = Instance.new("Frame")
-local Background = Instance.new("Frame")
-local TopBar = Instance.new("Frame")
-local UIGradient = Instance.new("UIGradient")
-local TitleHolder = Instance.new("Frame")
-local Title = Instance.new("TextLabel")
-local Holder = Instance.new("Frame")
-local UIListLayout = Instance.new("UIListLayout")
-local Reason_1 = Instance.new("TextLabel")
-local Reason_2 = Instance.new("TextLabel")
-local Reason_3 = Instance.new("TextLabel")
-local WarningText = Instance.new("TextLabel")
-local Exit = Instance.new("TextButton")
-local ImageLabel = Instance.new("ImageLabel")
-
-WarningUI.Name = "WarningUI"
-WarningUI.Parent = CoreGui
-
--- Set up main UI elements and positioning
-Main.Name = "Main"
-Main.Parent = WarningUI
-Main.AnchorPoint = Vector2.new(.5, .5)
-Main.Position = UDim2.new(.5, 0, .5, 0)
-Main.Size = UDim2.new(0, 400, 0, 400)
-
-BackgroundHolder.Name = "BackgroundHolder"
-BackgroundHolder.Parent = Main
-BackgroundHolder.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-BackgroundHolder.BackgroundTransparency = .25
-BackgroundHolder.BorderSizePixel = 0
-BackgroundHolder.Size = UDim2.new(1, 0, 1, 0)
-
-Background.Name = "Background"
-Background.Parent = BackgroundHolder
-Background.AnchorPoint = Vector2.new(.5, .5)
-Background.Position = UDim2.new(.5, 0, .5, 0)
-Background.Size = UDim2.new(.96, 0, .96, 0)
-
-TopBar.Name = "TopBar"
-TopBar.Parent = Background
-TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TopBar.BorderSizePixel = 0
-TopBar.Size = UDim2.new(1, 0, 0, 2)
-
-UIGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(53, 149, 146)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(159, 159, 80))
-}
-UIGradient.Parent = TopBar
-
--- Textbox and chat-button setup
-local TextBox = Instance.new("TextBox")
-TextBox.Name = "TextBox"
-TextBox.Parent = Main
-TextBox.Position = UDim2.new(0.5, -100, 0.8, 0)
-TextBox.Size = UDim2.new(0, 200, 0, 40)
-TextBox.Text = "Type something..."
-TextBox.Font = Enum.Font.SourceSans
-TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-TextBox.TextSize = 18
-TextBox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-TextBox.ClearTextOnFocus = false
-
-local ChatButton = Instance.new("TextButton")
-ChatButton.Name = "ChatButton"
-ChatButton.Parent = Main
-ChatButton.Position = UDim2.new(0.5, -100, 0.9, 0)
-ChatButton.Size = UDim2.new(0, 200, 0, 40)
-ChatButton.Text = "Send"
-ChatButton.Font = Enum.Font.SourceSans
-ChatButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-ChatButton.TextSize = 18
-ChatButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-
-ChatButton.MouseButton1Click:Connect(function()
-    local message = TextBox.Text
-    -- Send the message through your custom chat system or whatever system you are using
-    print("Message sent: " .. message) -- Debug, replace with actual chat system logic
-end)
-
-Exit.MouseButton1Down:Connect(function()
-    WarningUI:Destroy()
-end)
-
--- Final cleanup, restore settings
-for _, x in next, OldCoreTypeSettings do
-    if not x then
-        StarterGui:SetCore("ChatActive", false)
-    end
-    StarterGui:SetCoreGuiEnabled(_, x)
-end
-
-if OldCoreSetting then
-    StarterGui:SetCore("CoreGuiChatConnections", OldCoreSetting)
-end
-
-Notify(NotificationTitle, "Loaded successfully.", 15)
-print(string.format("Anti-ban loaded in %s seconds.", string.format("%.2f", tostring(tick() - ACL_LoadTime))))
+createCenteredGUI()
