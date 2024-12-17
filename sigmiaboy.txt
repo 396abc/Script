@@ -1,23 +1,6 @@
-
 -- GUI Creation
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-local Players = game:GetService("Players")
-local StarterGui = game:GetService("StarterGui")
-
-local Players = game:GetService("Players")
-local StarterGui = game:GetService("StarterGui")
-
-local function notifyPlayer(player, message)
-    StarterGui:SetCore("SendNotification", {
-        Title = "HD Admin";
-        Text = message;
-        Duration = 5;
-    })
-end
-
-local player = Players.LocalPlayer
-notifyPlayer(player, "Cracked HD admin is loading!")
 
 -- Main Frame (horizontal with rounded corners)
 local MainFrame = Instance.new("Frame")
@@ -37,7 +20,7 @@ UICorner.Parent = MainFrame
 local TitleLabel = Instance.new("TextLabel")
 TitleLabel.Size = UDim2.new(0, 200, 0, 50)
 TitleLabel.Position = UDim2.new(0, 10, 0, 0)
-TitleLabel.Text = "Ligma"
+TitleLabel.Text = "Fly UI"
 TitleLabel.TextSize = 24
 TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TitleLabel.BackgroundTransparency = 1  -- Transparent background
@@ -132,7 +115,7 @@ MinimizeButton.MouseButton1Click:Connect(function()
         buttonTweenRejoin:Play()
 
         -- Reset the position of the title label
-        TitleLabel.Text = "Ligma"
+        TitleLabel.Text = "Fly UI"
         isMinimized = false
     else
         -- Collapse the GUI into the title label
@@ -144,7 +127,7 @@ MinimizeButton.MouseButton1Click:Connect(function()
         buttonTweenRejoin:Play()
 
         -- Change the position of the title label
-        TitleLabel.Text = "Ligma"
+        TitleLabel.Text = "Fly UI"
         isMinimized = true
     end
 end)
@@ -254,14 +237,12 @@ function sFLY(vfly)
             CONTROL.L = - (vfly and vehicleflyspeed or iyflyspeed)
         elseif KEY:lower() == 'd' then 
             CONTROL.R = (vfly and vehicleflyspeed or iyflyspeed)
-        elseif QEfly and KEY:lower() == 'e' then
-            CONTROL.Q = (vfly and vehicleflyspeed or iyflyspeed)*2
-        elseif QEfly and KEY:lower() == 'q' then
-            CONTROL.E = -(vfly and vehicleflyspeed or iyflyspeed)*2
+        elseif KEY:lower() == 'space' then
+            CONTROL.E = (vfly and vehicleflyspeed or iyflyspeed)
+        elseif KEY:lower() == 'shift' then
+            CONTROL.Q = - (vfly and vehicleflyspeed or iyflyspeed)
         end
-        pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Track end)
     end)
-
     flyKeyUp = IYMouse.KeyUp:Connect(function(KEY)
         if KEY:lower() == 'w' then
             CONTROL.F = 0
@@ -269,24 +250,42 @@ function sFLY(vfly)
             CONTROL.B = 0
         elseif KEY:lower() == 'a' then
             CONTROL.L = 0
-        elseif KEY:lower() == 'd' then
+        elseif KEY:lower() == 'd' then 
             CONTROL.R = 0
-        elseif KEY:lower() == 'e' then
-            CONTROL.Q = 0
-        elseif KEY:lower() == 'q' then
+        elseif KEY:lower() == 'space' then
             CONTROL.E = 0
+        elseif KEY:lower() == 'shift' then
+            CONTROL.Q = 0
         end
     end)
-
     FLY()
 end
 
--- NoFly Script (NOFLY function)
+-- Stop flying function
 function NOFLY()
     FLYING = false
-    if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
-    if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
-        game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
-    end
-    pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Custom end)
 end
+
+-- Listen for Chat Input
+game.Players.LocalPlayer.Chatted:Connect(function(message)
+    -- Convert the message to lowercase to avoid case sensitivity
+    message = message:lower()
+
+    if message == ";fly" then
+        -- Activate the fly command
+        if not FLYING then
+            sFLY(true)  -- Start flying
+            print("Flying activated!")  -- Just for confirmation
+        else
+            print("Already flying, bruh!")
+        end
+    elseif message == ";unfly" then
+        -- Deactivate the fly command
+        if FLYING then
+            NOFLY()  -- Stop flying
+            print("Flying deactivated!")  -- Just for confirmation
+        else
+            print("Already on the ground, fam!")
+        end
+    end
+end)
