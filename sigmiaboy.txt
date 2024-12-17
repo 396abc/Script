@@ -9,14 +9,14 @@ local StarterGui = game:GetService("StarterGui")
 
 local function notifyPlayer(player, message)
     StarterGui:SetCore("SendNotification", {
-        Title = "HD Admin";
+        Title = "Sigma hackerman";
         Text = message;
         Duration = 5;
     })
 end
 
 local player = Players.LocalPlayer
-notifyPlayer(player, "Cracked HD admin is loading!")
+notifyPlayer(player, "Flight Menu Toggled!")
 
 -- Main Frame (horizontal with rounded corners)
 local MainFrame = Instance.new("Frame")
@@ -36,7 +36,7 @@ UICorner.Parent = MainFrame
 local TitleLabel = Instance.new("TextLabel")
 TitleLabel.Size = UDim2.new(0, 200, 0, 50)
 TitleLabel.Position = UDim2.new(0, 10, 0, 0)
-TitleLabel.Text = "Ligma"
+TitleLabel.Text = "Fly UI"
 TitleLabel.TextSize = 24
 TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TitleLabel.BackgroundTransparency = 1  -- Transparent background
@@ -131,7 +131,7 @@ MinimizeButton.MouseButton1Click:Connect(function()
         buttonTweenRejoin:Play()
 
         -- Reset the position of the title label
-        TitleLabel.Text = "Ligma"
+        TitleLabel.Text = "Fly UI"
         isMinimized = false
     else
         -- Collapse the GUI into the title label
@@ -143,7 +143,7 @@ MinimizeButton.MouseButton1Click:Connect(function()
         buttonTweenRejoin:Play()
 
         -- Change the position of the title label
-        TitleLabel.Text = "Ligma"
+        TitleLabel.Text = "Fly UI"
         isMinimized = true
     end
 end)
