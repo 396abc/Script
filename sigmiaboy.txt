@@ -1,0 +1,275 @@
+-- GUI Creation
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Main Frame (horizontal with rounded corners)
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 300, 0, 200)  -- Increased height to accommodate the rejoin button
+MainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)  -- Center position
+MainFrame.BackgroundColor3 = Color3.fromRGB(0, 100, 150)
+MainFrame.BackgroundTransparency = 0.2
+MainFrame.BorderSizePixel = 0
+MainFrame.Parent = ScreenGui
+
+-- Rounded corners (using UICorner)
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10)  -- Rounded corners
+UICorner.Parent = MainFrame
+
+-- Title Label
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Size = UDim2.new(0, 200, 0, 50)
+TitleLabel.Position = UDim2.new(0, 10, 0, 0)
+TitleLabel.Text = "Fly UI"
+TitleLabel.TextSize = 24
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.BackgroundTransparency = 1  -- Transparent background
+TitleLabel.Parent = MainFrame
+
+-- Fly Button
+local FlyButton = Instance.new("TextButton")
+FlyButton.Size = UDim2.new(0, 200, 0, 50)
+FlyButton.Position = UDim2.new(0, 10, 0, 60)  -- Placed below the title
+FlyButton.Text = "Toggle Fly"
+FlyButton.TextSize = 20
+FlyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+FlyButton.BackgroundColor3 = Color3.fromRGB(0, 100, 150)
+FlyButton.BorderSizePixel = 0
+FlyButton.Parent = MainFrame
+
+local isFlying = false  -- State to check if flying is on or off
+
+FlyButton.MouseButton1Click:Connect(function()
+    if isFlying then
+        -- If already flying, stop flying (NOFLY)
+        NOFLY()
+        FlyButton.Text = "Toggle Fly"  -- Reset the button text
+    else
+        -- If not flying, start flying (FLY)
+        sFLY(true)
+        FlyButton.Text = "Stop Fly"  -- Change the button text
+    end
+    isFlying = not isFlying  -- Toggle flying state
+end)
+
+-- Rejoin Button
+local RejoinButton = Instance.new("TextButton")
+RejoinButton.Size = UDim2.new(0, 200, 0, 50)
+RejoinButton.Position = UDim2.new(0, 10, 0, 120)  -- Placed below the Fly button
+RejoinButton.Text = "Rejoin"
+RejoinButton.TextSize = 20
+RejoinButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+RejoinButton.BackgroundColor3 = Color3.fromRGB(100, 150, 200)
+RejoinButton.BorderSizePixel = 0
+RejoinButton.Parent = MainFrame
+
+RejoinButton.MouseButton1Click:Connect(function()
+    local Players = game:GetService("Players")
+    local TeleportService = game:GetService("TeleportService")
+    local PlaceId = game.PlaceId
+    local JobId = game.JobId
+    
+    if #Players:GetPlayers() <= 1 then
+        Players.LocalPlayer:Kick("\nRejoining...")
+        wait()
+        TeleportService:Teleport(PlaceId, Players.LocalPlayer)
+    else
+        TeleportService:TeleportToPlaceInstance(PlaceId, JobId, Players.LocalPlayer)
+    end
+end)
+
+-- Close Button
+local CloseButton = Instance.new("TextButton")
+CloseButton.Size = UDim2.new(0, 50, 0, 50)
+CloseButton.Position = UDim2.new(1, -50, 0, 0)
+CloseButton.Text = "X"
+CloseButton.TextSize = 20
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)  -- Red button
+CloseButton.BorderSizePixel = 0
+CloseButton.Parent = MainFrame
+
+-- Minimize Button
+local MinimizeButton = Instance.new("TextButton")
+MinimizeButton.Size = UDim2.new(0, 50, 0, 50)
+MinimizeButton.Position = UDim2.new(1, -100, 0, 0)
+MinimizeButton.Text = "_"
+MinimizeButton.TextSize = 30
+MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeButton.BackgroundColor3 = Color3.fromRGB(50, 50, 200)  -- Blue button
+MinimizeButton.BorderSizePixel = 0
+MinimizeButton.Parent = MainFrame
+
+-- Minimize button functionality with fade effect
+local TweenService = game:GetService("TweenService")
+local isMinimized = false  -- Track minimize state
+
+MinimizeButton.MouseButton1Click:Connect(function()
+    if isMinimized then
+        -- Expand the GUI back to original size
+        local expandTween = TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 300, 0, 200)})
+        local buttonTweenFly = TweenService:Create(FlyButton, TweenInfo.new(0.5), {TextTransparency = 0, BackgroundTransparency = 0})  -- Fade in the Fly button text and background
+        local buttonTweenRejoin = TweenService:Create(RejoinButton, TweenInfo.new(0.5), {TextTransparency = 0, BackgroundTransparency = 0})  -- Fade in the Rejoin button text and background
+        expandTween:Play()
+        buttonTweenFly:Play()
+        buttonTweenRejoin:Play()
+
+        -- Reset the position of the title label
+        TitleLabel.Text = "Fly UI"
+        isMinimized = false
+    else
+        -- Collapse the GUI into the title label
+        local collapseTween = TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(0, 300, 0, 50)})
+        local buttonTweenFly = TweenService:Create(FlyButton, TweenInfo.new(0.5), {TextTransparency = 1, BackgroundTransparency = 1})  -- Fade out the Fly button text and background
+        local buttonTweenRejoin = TweenService:Create(RejoinButton, TweenInfo.new(0.5), {TextTransparency = 1, BackgroundTransparency = 1})  -- Fade out the Rejoin button text and background
+        collapseTween:Play()
+        buttonTweenFly:Play()
+        buttonTweenRejoin:Play()
+
+        -- Change the position of the title label
+        TitleLabel.Text = "Fly UI"
+        isMinimized = true
+    end
+end)
+
+-- Close button functionality
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()  -- Close the GUI when clicked
+end)
+
+-- Dragging functionality
+local dragging = false
+local dragStart = nil
+local startPos = nil
+
+-- Function to start dragging
+MainFrame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
+    end
+end)
+
+-- Function to update drag
+MainFrame.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+-- Function to stop dragging
+MainFrame.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+-- Fly Script (sFLY function)
+local FLYING = false
+local QEfly = true
+local iyflyspeed = 1
+local vehicleflyspeed = 1
+
+local function getRoot(character)
+    return character:WaitForChild("HumanoidRootPart")
+end
+
+function sFLY(vfly)
+    repeat wait() until game.Players.LocalPlayer and game.Players.LocalPlayer.Character and getRoot(game.Players.LocalPlayer.Character) and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    local IYMouse = game.Players.LocalPlayer:GetMouse()  -- Correct mouse reference
+    if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
+
+    local T = getRoot(game.Players.LocalPlayer.Character)
+    local CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+    local lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+    local SPEED = 0
+
+    local function FLY()
+        FLYING = true
+        local BG = Instance.new('BodyGyro')
+        local BV = Instance.new('BodyVelocity')
+        BG.P = 9e4
+        BG.Parent = T
+        BV.Parent = T
+        BG.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+        BG.cframe = T.CFrame
+        BV.velocity = Vector3.new(0, 0, 0)
+        BV.maxForce = Vector3.new(9e9, 9e9, 9e9)
+        task.spawn(function()
+            repeat wait()
+                if not vfly and game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+                    game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = true
+                end
+                if CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 or CONTROL.Q + CONTROL.E ~= 0 then
+                    SPEED = 50
+                elseif not (CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 or CONTROL.Q + CONTROL.E ~= 0) and SPEED ~= 0 then
+                    SPEED = 0
+                end
+                if (CONTROL.L + CONTROL.R) ~= 0 or (CONTROL.F + CONTROL.B) ~= 0 or (CONTROL.Q + CONTROL.E) ~= 0 then
+                    BV.velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (CONTROL.F + CONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(CONTROL.L + CONTROL.R, (CONTROL.F + CONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+                    lCONTROL = {F = CONTROL.F, B = CONTROL.B, L = CONTROL.L, R = CONTROL.R}
+                elseif (CONTROL.L + CONTROL.R) == 0 and (CONTROL.F + CONTROL.B) == 0 and (CONTROL.Q + CONTROL.E) == 0 and SPEED ~= 0 then
+                    BV.velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (lCONTROL.F + lCONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(lCONTROL.L + lCONTROL.R, (lCONTROL.F + lCONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+                else
+                    BV.velocity = Vector3.new(0, 0, 0)
+                end
+                BG.cframe = workspace.CurrentCamera.CoordinateFrame
+            until not FLYING
+            CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+            lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+            SPEED = 0
+            BG:Destroy()
+            BV:Destroy()
+            if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+                game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
+            end
+        end)
+    end
+
+    flyKeyDown = IYMouse.KeyDown:Connect(function(KEY)
+        if KEY:lower() == 'w' then
+            CONTROL.F = (vfly and vehicleflyspeed or iyflyspeed)
+        elseif KEY:lower() == 's' then
+            CONTROL.B = - (vfly and vehicleflyspeed or iyflyspeed)
+        elseif KEY:lower() == 'a' then
+            CONTROL.L = - (vfly and vehicleflyspeed or iyflyspeed)
+        elseif KEY:lower() == 'd' then 
+            CONTROL.R = (vfly and vehicleflyspeed or iyflyspeed)
+        elseif QEfly and KEY:lower() == 'e' then
+            CONTROL.Q = (vfly and vehicleflyspeed or iyflyspeed)*2
+        elseif QEfly and KEY:lower() == 'q' then
+            CONTROL.E = -(vfly and vehicleflyspeed or iyflyspeed)*2
+        end
+        pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Track end)
+    end)
+
+    flyKeyUp = IYMouse.KeyUp:Connect(function(KEY)
+        if KEY:lower() == 'w' then
+            CONTROL.F = 0
+        elseif KEY:lower() == 's' then
+            CONTROL.B = 0
+        elseif KEY:lower() == 'a' then
+            CONTROL.L = 0
+        elseif KEY:lower() == 'd' then
+            CONTROL.R = 0
+        elseif KEY:lower() == 'e' then
+            CONTROL.Q = 0
+        elseif KEY:lower() == 'q' then
+            CONTROL.E = 0
+        end
+    end)
+
+    FLY()
+end
+
+-- NoFly Script (NOFLY function)
+function NOFLY()
+    FLYING = false
+    if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
+    if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+        game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
+    end
+    pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Custom end)
+end
