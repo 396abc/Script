@@ -194,7 +194,7 @@ Holder.Parent = PARENT
 Holder.Active = true
 Holder.BackgroundColor3 = Color3.fromRGB(46, 46, 47)
 Holder.BorderSizePixel = 0
-Holder.Position = UDim2.new(1, -250, 1, -220)
+Holder.Position = UDim2.new(99999, -99999, 9999, -9999)
 Holder.Size = UDim2.new(0, 250, 0, 220)
 Holder.ZIndex = 10
 table.insert(shade2,Holder)
@@ -12772,3 +12772,73 @@ task.spawn(function()
 	minimizeHolder()
 	if IsOnMobile then notify("Unstable Device", "On mobile, AdminX may have issues or features that are not functioning correctly.") end
 end)
+
+-- Function to create a notification
+local function showNotification(title, message)
+    local notification = Instance.new("Frame")
+    notification.Size = UDim2.new(0, 300, 0, 100)
+    notification.Position = UDim2.new(0.5, -150, 0.5, -50) -- Centered on the screen
+    notification.BackgroundColor3 = Color3.fromRGB(36, 36, 37)
+    notification.BorderSizePixel = 0
+    notification.BackgroundTransparency = 1 -- Initially transparent for fade-in
+    notification.Parent = PARENT
+    notification.ZIndex = 999
+
+    local imageIcon = Instance.new("ImageLabel")
+    imageIcon.Image = "rbxassetid://71023617815881"
+    imageIcon.Size = UDim2.new(0, 20, 0, 20) -- Icon size
+    imageIcon.Position = UDim2.new(0, 10, 0, 10) -- Top-left corner with padding
+    imageIcon.BackgroundTransparency = 1
+    imageIcon.ImageTransparency = 1 -- Initially transparent for fade-in
+    imageIcon.Parent = notification
+    imageIcon.ZIndex = 999
+
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Text = title or "Notification"
+    titleLabel.Font = Enum.Font.SourceSansBold
+    titleLabel.TextSize = 18
+    titleLabel.TextColor3 = Color3.new(1, 1, 1)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Size = UDim2.new(1, 0, 0.3, 0)
+    titleLabel.Parent = notification
+    titleLabel.ZIndex = 999
+    titleLabel.TextTransparency = 1 -- Initially transparent for fade-in
+
+    local messageLabel = Instance.new("TextLabel")
+    messageLabel.Text = message or "This is a notification."
+    messageLabel.Font = Enum.Font.SourceSans
+    messageLabel.TextSize = 16
+    messageLabel.TextColor3 = Color3.new(1, 1, 1)
+    messageLabel.BackgroundTransparency = 1
+    messageLabel.Position = UDim2.new(0, 0, 0.3, 0)
+    messageLabel.Size = UDim2.new(1, 0, 0.7, 0)
+    messageLabel.TextWrapped = true
+    messageLabel.Parent = notification
+    messageLabel.ZIndex = 999
+    messageLabel.TextTransparency = 1 -- Initially transparent for fade-in
+
+    -- Fade-in effect
+    for i = 1, 10 do
+        notification.BackgroundTransparency = 1 - (i * 0.1)
+        imageIcon.ImageTransparency = 1 - (i * 0.1)
+        titleLabel.TextTransparency = 1 - (i * 0.1)
+        messageLabel.TextTransparency = 1 - (i * 0.1)
+        task.wait(0.05)
+    end
+
+    -- Wait for 4 seconds before fading out
+    task.delay(4, function()
+        -- Fade-out effect
+        for i = 1, 10 do
+            notification.BackgroundTransparency = i * 0.1
+            imageIcon.ImageTransparency = i * 0.1
+            titleLabel.TextTransparency = i * 0.1
+            messageLabel.TextTransparency = i * 0.1
+            task.wait(0.05)
+        end
+        notification:Destroy()
+    end)
+end
+
+-- Show the notification
+showNotification("AdminX Successfully Loaded", "This notification will disappear in 5 seconds.")
