@@ -629,7 +629,11 @@
  cmd.add({"script", "ls", "s", "run"}, {"script <source> (ls, s, run)", "Run the code requested"}, function(source)
 	 loadstring(game:HttpGet(source))()
  end)
- 
+
+cmd.add({"walkonwalls"}, {"wallwalk", "Walk on walls"}, function()
+	 loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/wallwalker.lua"))()
+ end)
+
  cmd.add({"executor"}, {"executor", "Very simple executor"}, function()
 	 loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/executor"))()
  end)
