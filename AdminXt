@@ -21,7 +21,7 @@
  local Notify = Notification.Notify;
 
  Notify({
-		 Description = "https://discord.gg/pnPVKKdpfd";
+		 Description = "hhttps://discord.gg/Epn4J6aBnT";
 		 Title = "Join the Discord Server!";
 		 Duration = 20;
 		 
@@ -131,6 +131,14 @@
  
  local bringc = {}
  
+ local gyatlabel = Instance.new("ImageLabel")
+gyatlabel.Parent = screenGui
+gyatlabel.Size = UDim2.new(0, 200, 0, 200) -- Adjust size (200x200 px)
+gyatlabel.Position = UDim2.new(0.5, -100, 0.5, -100) -- Center it
+gyatlabel.BackgroundTransparency = 1 -- Make it clean, no background
+gyatlabel.Image = "rbxassetid://95686339157613" -- Replace with your image ID
+
+makeRound(gyatlabel, 30)
  --[[ COMMAND FUNCTIONS ]]--
  commandcount = 0
  cmd = {}
@@ -4752,7 +4760,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/m
 					 end
 					 end)
  
-			 cmd.add({"toolgui"}, {"toolgui", "cool tool ui aka replication ui made by 0866"}, function()
+			 cmd.add({"toolgui"}, {"toolgui", "cool tool ui aka replication ui made by sigmaboy"}, function()
 				 loadstring(game:HttpGet("https://pastebin.com/raw/vr2YVyF6"))();
  wait();
  
@@ -7976,7 +7984,7 @@ game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageReque
 	 FE Custom BTools V2 | Script made by Cyclically
 	 BTools will only replicate on unanchored parts
 	 https://v3rmillion.net/member.php?action=profile&uid=785986
-	 Don't edit script unless you know what you're doing. If you wanna add this into a script, please give credits and message me on discord that you added it in a script at Cyclically#4905
+	 Don't edit script unless you know what you're doing. If you wanna add this into a script, please give credits and message me on discord that you added it in a script at 396abc
  ]]
  
  local LocalPlayer = game:GetService("Players").LocalPlayer
@@ -8155,7 +8163,7 @@ print(text)
 	 script.Parent.MouseButton1Click:Connect(function()
 		 -- This basically makes roblox unable to log your chat messages sent in-game. Meaning if you get reported for saying something bad, you won't get banned!
 		 -- Store in autoexec folder
-		 -- Credits: AnthonyIsntHere and ArianBlaack
+		 -- Credits: 396abc and Tuncaylive
 	 
 	 --[[
 		 Change-logs:
@@ -9758,7 +9766,7 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
  Duration = 5;
  
  });
-	 --Shit ass script made by failedmite57926
+	 --Shit ass script made by Johnp.rk
  
  local LocalPlayer = game:GetService("Players").LocalPlayer
  local Character = LocalPlayer.Character
@@ -12032,7 +12040,7 @@ until glueloop == false
  Duration = 5;
  
  });
-	  -- made by joshclark756#7155
+	  -- made by Tuncaylive
  local mouse = game.Players.LocalPlayer:GetMouse()
  local uis = game:GetService("UserInputService")
  
@@ -12077,7 +12085,7 @@ until glueloop == false
  end
  end)
  wait(0.2)
-	 -- made by joshclark756#7155
+	 -- made by 396abc
  local mouse = game.Players.LocalPlayer:GetMouse()
  local uis = game:GetService("UserInputService")
  
@@ -13574,7 +13582,7 @@ game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
  end)
  
  cmd.add({"holdhat"}, {"holdhat", "Can make you hold your hats execute the command and you will have them in your inventory"}, function(...)
- --made by Nightmare#0930
+ --made by Johnp.rk
  local lp = game.Players.LocalPlayer
  local char = lp.Character
  
