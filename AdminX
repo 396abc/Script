@@ -24,7 +24,7 @@
 
  Notify({
 		 Description = "hhttps://discord.gg/Epn4J6aBnT";
-		 Title = "Join the Discord Server!";
+		 Title = "Join the Discord Server! (Made by 396abc)";
 		 Duration = 20;
 		 
 });
