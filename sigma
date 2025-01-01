@@ -1,2 +1,0 @@
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/quicktest"))()
