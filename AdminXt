@@ -79,28 +79,6 @@
  local Character = game.Players.LocalPlayer.Character
  local Clicked = true
  _G.Spam = false
-
--- Create the gyatlabel ImageLabel
-local gyatlabel = Instance.new("ImageLabel")
-gyatlabel.Parent = game.CoreGui -- Parent to CoreGui for visibility
-gyatlabel.Size = UDim2.new(0, 200, 0, 200) -- Adjust size (200x200 px)
-gyatlabel.Position = UDim2.new(0.5, -100, 0.5, -100) -- Center it
-gyatlabel.BackgroundTransparency = 1 -- Transparent background
-gyatlabel.Image = "rbxassetid://95686339157613" -- Replace with your image ID
-makeRound(gyatlabel, 30) -- Apply round corners if this function exists
-
--- TweenService for fade-in and fade-out
-local fadeIn = TweenService:Create(gyatlabel, TweenInfo.new(1), {ImageTransparency = 0})
-fadeIn:Play()
-
--- Wait for fade-in to complete, then fade out after 5 seconds
-fadeIn.Completed:Connect(function()
-    task.wait(5)
-    local fadeOut = TweenService:Create(gyatlabel, TweenInfo.new(1), {ImageTransparency = 1})
-    fadeOut:Play()
-end)
-
-
  --[[ FOR LOOP COMMANDS ]]--
  view = false
  anniblockspam = false
