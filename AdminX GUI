@@ -175,7 +175,7 @@ end
 
 CommandsButton.MouseButton1Click:Connect(function()   
     -- Load the script
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/AdminXt"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/AdminX"))()
 
     -- Show notification after button click
     sendNotification("HD Admin", "Chat commands have been toggled", 3)
