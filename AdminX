@@ -5451,7 +5451,7 @@ end
 end
 	 end)
  
-		 cmd.add({"unesp"}, {"unesp", "Disables esp"}, function()
+		 cmd.add({"unesp"}, {"noesp", "Disables esp"}, function()
 			addedFunc:Disconnect()
  for _, player in ipairs(game.Players:GetPlayers()) do
 	 local character = player.Character
