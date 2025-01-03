@@ -666,7 +666,31 @@ cmd.add({"walkonwalls"}, {"wallwalk", "Walk on walls"}, function()
 		 firetouchinterest(target.Character.Humanoid.RootPart,tool.Handle,1)
 	  wait(1.3)
  end)
- 
+
+ cmd.add({"Chams"}, {"chams", "see em through wall"}, function()
+	 CHMSenabled = true
+		for i,v in pairs(Players:GetPlayers()) do
+			if v.Name ~= speaker.Name then
+				CHMS(v)
+			end
+		end
+	else
+		notify('Chams','Disable ESP (noesp) before using chams')
+	end
+end)
+
+cmd.add({"nochams"}, {"unchams", "dont see em through wall"}, function()
+CHMSenabled = false
+	for i,v in pairs(Players:GetPlayers()) do
+		local chmsplr = v
+		for i,c in pairs(COREGUI:GetChildren()) do
+			if c.Name == chmsplr.Name..'_CHMS' then
+				c:Destroy()
+			end
+		end
+	end
+end)
+
  cmd.add({"valk"}, {"valk", "Only works on dollhouse"}, function()
  repeat game:GetService("RunService").Stepped:wait()
  until game:IsLoaded() and game:GetService("Players").LocalPlayer
