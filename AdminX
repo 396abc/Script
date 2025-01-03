@@ -13783,7 +13783,7 @@ game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
 	)
 end)
  
- cmd.add({"invisible"}, {"invisible", "Sets invisibility to scare people or something"}, function()
+ cmd.add({"invis"}, {"invisible", "Sets invisibility to scare people or something"}, function()
 	 Keybind = "E"
  
 	 local CS = game:GetService("CollectionService")
