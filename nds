@@ -322,14 +322,14 @@ StarterGui:SetCore("SendNotification", {
 })
 
 -- Get player thumbnail
-local userId = Players:GetUserIdFromNameAsync("NannaDev")
+local userId = Players:GetUserIdFromNameAsync("396abc")
 local thumbType = Enum.ThumbnailType.HeadShot
 local thumbSize = Enum.ThumbnailSize.Size420x420
 local content, isReady = Players:GetUserThumbnailAsync(userId, thumbType, thumbSize)
 
 StarterGui:SetCore("SendNotification", {
     Title = "Enjoy Super Ring [V3]",
-    Text = "Cracked By .gg/3kZ7dKbJPe",
+    Text = "Cracked By 396abc",
     Icon = content,
     Duration = 5
 })
