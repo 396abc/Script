@@ -1,6 +1,6 @@
 --[[
 
-	396abc Interface 396abc
+	tuncaysgyat Interface Suite
 	by Sirius
 
 	shlex | Designing + Programming
@@ -10,7 +10,7 @@
 ]]
 
 if debugX then
-	warn('Initialising 396abc')
+	warn('Initialising tuncaysgyat')
 end
 
 local windowCreated = false
@@ -27,15 +27,15 @@ local Release = "Build 1.72"
 
 local globalSuccess, globalResult = pcall(function()
 
-	local 396abcFolder = "396abc"
-	local ConfigurationFolder = 396abcFolder.."/Configurations"
+	local tuncaysgyatFolder = "tuncaysgyat"
+	local ConfigurationFolder = tuncaysgyatFolder.."/Configurations"
 	local ConfigurationExtension = ".rfld"
 	local settingsTable = {
 		General = {
 			-- if needs be in order just make getSetting(name)
-			396abcOpen = {Type = 'bind', Value = 'K', Name = '396abc Keybind'},
+			tuncaysgyatOpen = {Type = 'bind', Value = 'K', Name = 'tuncaysgyat Keybind'},
 			-- buildwarnings
-			-- 396abcprompts
+			-- tuncaysgyatprompts
 
 		},
 		System = {
@@ -51,16 +51,16 @@ local globalSuccess, globalResult = pcall(function()
 
 		local success, result =	pcall(function()
 			task.spawn(function()
-				if isfolder and isfolder(396abcFolder) then
-					if isfile and isfile(396abcFolder..'/settings'..ConfigurationExtension) then
-						file = readfile(396abcFolder..'/settings'..ConfigurationExtension)
+				if isfolder and isfolder(tuncaysgyatFolder) then
+					if isfile and isfile(tuncaysgyatFolder..'/settings'..ConfigurationExtension) then
+						file = readfile(tuncaysgyatFolder..'/settings'..ConfigurationExtension)
 					end
 				end
 
 				-- for debug in studio
 				if useStudio then
 					file = [[
-		{"General":{"396abcOpen":{"Value":"K","Type":"bind","Name":"396abc Keybind","Element":{"HoldToInteract":false,"Ext":true,"Name":"396abc Keybind","Set":null,"CallOnChange":true,"Callback":null,"CurrentKeybind":"K"}}},"System":{"usageAnalytics":{"Value":false,"Type":"toggle","Name":"Anonymised Analytics","Element":{"Ext":true,"Name":"Anonymised Analytics","Set":null,"CurrentValue":false,"Callback":null}}}}
+		{"General":{"tuncaysgyatOpen":{"Value":"K","Type":"bind","Name":"tuncaysgyat Keybind","Element":{"HoldToInteract":false,"Ext":true,"Name":"tuncaysgyat Keybind","Set":null,"CallOnChange":true,"Callback":null,"CurrentKeybind":"K"}}},"System":{"usageAnalytics":{"Value":false,"Type":"toggle","Name":"Anonymised Analytics","Element":{"Ext":true,"Name":"Anonymised Analytics","Set":null,"CurrentValue":false,"Callback":null}}}}
 	]]
 				end
 
@@ -99,7 +99,7 @@ local globalSuccess, globalResult = pcall(function()
 
 		if not success then 
 			if writefile then
-				warn('396abc had an issue accessing configuration saving capability.')
+				warn('tuncaysgyat had an issue accessing configuration saving capability.')
 			end
 		end
 	end
@@ -118,7 +118,7 @@ local globalSuccess, globalResult = pcall(function()
 	--	local fileFunctionsAvailable = isfile and writefile and readfile
 
 	--	if not fileFunctionsAvailable and not useStudio then
-	--		warn('396abc Interface 396abc | Sirius Analytics:\n\n\nAs you don\'t have file functionality with your executor, we are unable to save whether you want to opt in or out to analytics.\nIf you do not want to take part in anonymised usage statistics, let us know in our Discord at https://discord.gg/Epn4J6aBnT and we will manually opt you out.')
+	--		warn('tuncaysgyat Interface Suite | Sirius Analytics:\n\n\nAs you don\'t have file functionality with your executor, we are unable to save whether you want to opt in or out to analytics.\nIf you do not want to take part in anonymised usage statistics, let us know in our Discord at sirius.menu/discord and we will manually opt you out.')
 	--		analytics = true	
 	--	else
 	--		prompt.create(
@@ -156,7 +156,7 @@ local globalSuccess, globalResult = pcall(function()
 						reporter.report("0193dbf8-7da1-79de-b399-2c0f68b0a9ad", Release, InterfaceBuild)
 					end)
 				else
-					warn("Failed to load or execute the reporter. \nPlease notify 396abc developers at https://discord.gg/Epn4J6aBnT.")
+					warn("Failed to load or execute the reporter. \nPlease notify tuncaysgyat developers at sirius.menu/discord.")
 				end
 			end)
 			if debugX then warn('Finished Report') end
@@ -175,7 +175,7 @@ local globalSuccess, globalResult = pcall(function()
 		warn('Moving on to continue initialisation')
 	end
 
-	local 396abcLibrary = {
+	local tuncaysgyatLibrary = {
 		Flags = {},
 		Theme = {
 			Default = {
@@ -566,14 +566,14 @@ local globalSuccess, globalResult = pcall(function()
 
 	-- Interface Management
 
-	local 396abc = useStudio and script.Parent:FindFirstChild('396abc') or game:GetObjects("rbxassetid://10804731440")[1]
+	local tuncaysgyat = useStudio and script.Parent:FindFirstChild('tuncaysgyat') or game:GetObjects("rbxassetid://10804731440")[1]
 	local buildAttempts = 0
 	local correctBuild = false
 	local warned
 	local globalLoaded
 
 	repeat
-		if 396abc:FindFirstChild('Build') and 396abc.Build.Value == InterfaceBuild then
+		if tuncaysgyat:FindFirstChild('Build') and tuncaysgyat.Build.Value == InterfaceBuild then
 			correctBuild = true
 			break
 		end
@@ -581,42 +581,42 @@ local globalSuccess, globalResult = pcall(function()
 		correctBuild = false
 
 		if not warned then
-			warn('396abc | Build Mismatch')
-			print('396abc may encounter issues as you are running an incompatible interface version ('.. ((396abc:FindFirstChild('Build') and 396abc.Build.Value) or 'No Build') ..').\n\nThis version of 396abc is intended for interface build '..InterfaceBuild..'.')
+			warn('tuncaysgyat | Build Mismatch')
+			print('tuncaysgyat may encounter issues as you are running an incompatible interface version ('.. ((tuncaysgyat:FindFirstChild('Build') and tuncaysgyat.Build.Value) or 'No Build') ..').\n\nThis version of tuncaysgyat is intended for interface build '..InterfaceBuild..'.')
 			warned = true
 		end
 
-		toDestroy, 396abc = 396abc, useStudio and script.Parent:FindFirstChild('396abc') or game:GetObjects("rbxassetid://10804731440")[1]
+		toDestroy, tuncaysgyat = tuncaysgyat, useStudio and script.Parent:FindFirstChild('tuncaysgyat') or game:GetObjects("rbxassetid://10804731440")[1]
 		if toDestroy and not useStudio then toDestroy:Destroy() end
 
 		buildAttempts = buildAttempts + 1
 	until buildAttempts >= 2
 
-	396abc.Enabled = false
+	tuncaysgyat.Enabled = false
 
 	if gethui then
-		396abc.Parent = gethui()
+		tuncaysgyat.Parent = gethui()
 	elseif syn and syn.protect_gui then 
-		syn.protect_gui(396abc)
-		396abc.Parent = CoreGui
+		syn.protect_gui(tuncaysgyat)
+		tuncaysgyat.Parent = CoreGui
 	elseif not useStudio and CoreGui:FindFirstChild("RobloxGui") then
-		396abc.Parent = CoreGui:FindFirstChild("RobloxGui")
+		tuncaysgyat.Parent = CoreGui:FindFirstChild("RobloxGui")
 	elseif not useStudio then
-		396abc.Parent = CoreGui
+		tuncaysgyat.Parent = CoreGui
 	end
 
 	if gethui then
 		for _, Interface in ipairs(gethui():GetChildren()) do
-			if Interface.Name == 396abc.Name and Interface ~= 396abc then
+			if Interface.Name == tuncaysgyat.Name and Interface ~= tuncaysgyat then
 				Interface.Enabled = false
-				Interface.Name = "396abc-Old"
+				Interface.Name = "tuncaysgyat-Old"
 			end
 		end
 	elseif not useStudio then
 		for _, Interface in ipairs(CoreGui:GetChildren()) do
-			if Interface.Name == 396abc.Name and Interface ~= 396abc then
+			if Interface.Name == tuncaysgyat.Name and Interface ~= tuncaysgyat then
 				Interface.Enabled = false
-				Interface.Name = "396abc-Old"
+				Interface.Name = "tuncaysgyat-Old"
 			end
 		end
 	end
@@ -625,7 +625,7 @@ local globalSuccess, globalResult = pcall(function()
 	local minSize = Vector2.new(1024, 768)
 	local useMobileSizing
 
-	if 396abc.AbsoluteSize.X < minSize.X and 396abc.AbsoluteSize.Y < minSize.Y then
+	if tuncaysgyat.AbsoluteSize.X < minSize.X and tuncaysgyat.AbsoluteSize.Y < minSize.Y then
 		useMobileSizing = true
 	end
 
@@ -636,24 +636,24 @@ local globalSuccess, globalResult = pcall(function()
 
 	-- Object Variables
 
-	local Main = 396abc.Main
-	local MPrompt = 396abc:FindFirstChild('Prompt')
+	local Main = tuncaysgyat.Main
+	local MPrompt = tuncaysgyat:FindFirstChild('Prompt')
 	local Topbar = Main.Topbar
 	local Elements = Main.Elements
 	local LoadingFrame = Main.LoadingFrame
 	local TabList = Main.TabList
-	local dragBar = 396abc:FindFirstChild('Drag')
+	local dragBar = tuncaysgyat:FindFirstChild('Drag')
 	local dragInteract = dragBar and dragBar.Interact or nil
 	local dragBarCosmetic = dragBar and dragBar.Drag or nil
 
 	local dragOffset = 255
 	local dragOffsetMobile = 150
 
-	396abc.DisplayOrder = 100
+	tuncaysgyat.DisplayOrder = 100
 	LoadingFrame.Version.Text = Release
 
 
-	local Icons = useStudio and require(script.Parent.icons) or loadstring(game:HttpGet('https://raw.githubusercontent.com/SiriusSoftwareLtd/396abc/refs/heads/main/icons.lua'))()
+	local Icons = useStudio and require(script.Parent.icons) or loadstring(game:HttpGet('https://raw.githubusercontent.com/SiriusSoftwareLtd/tuncaysgyat/refs/heads/main/icons.lua'))()
 
 	-- Variables
 
@@ -663,28 +663,28 @@ local globalSuccess, globalResult = pcall(function()
 	local Hidden = false
 	local Debounce = false
 	local searchOpen = false
-	local Notifications = 396abc.Notifications
+	local Notifications = tuncaysgyat.Notifications
 
-	local SelectedTheme = 396abcLibrary.Theme.Default
+	local SelectedTheme = tuncaysgyatLibrary.Theme.Default
 
 	local function ChangeTheme(Theme)
 		if typeof(Theme) == 'string' then
-			SelectedTheme = 396abcLibrary.Theme[Theme]
+			SelectedTheme = tuncaysgyatLibrary.Theme[Theme]
 		elseif typeof(Theme) == 'table' then
 			SelectedTheme = Theme
 		end
 
-		396abc.Main.BackgroundColor3 = SelectedTheme.Background
-		396abc.Main.Topbar.BackgroundColor3 = SelectedTheme.Topbar
-		396abc.Main.Topbar.CornerRepair.BackgroundColor3 = SelectedTheme.Topbar
-		396abc.Main.Shadow.Image.ImageColor3 = SelectedTheme.Shadow
+		tuncaysgyat.Main.BackgroundColor3 = SelectedTheme.Background
+		tuncaysgyat.Main.Topbar.BackgroundColor3 = SelectedTheme.Topbar
+		tuncaysgyat.Main.Topbar.CornerRepair.BackgroundColor3 = SelectedTheme.Topbar
+		tuncaysgyat.Main.Shadow.Image.ImageColor3 = SelectedTheme.Shadow
 
-		396abc.Main.Topbar.ChangeSize.ImageColor3 = SelectedTheme.TextColor
-		396abc.Main.Topbar.Hide.ImageColor3 = SelectedTheme.TextColor
-		396abc.Main.Topbar.Search.ImageColor3 = SelectedTheme.TextColor
+		tuncaysgyat.Main.Topbar.ChangeSize.ImageColor3 = SelectedTheme.TextColor
+		tuncaysgyat.Main.Topbar.Hide.ImageColor3 = SelectedTheme.TextColor
+		tuncaysgyat.Main.Topbar.Search.ImageColor3 = SelectedTheme.TextColor
 		if Topbar:FindFirstChild('Settings') then
-			396abc.Main.Topbar.Settings.ImageColor3 = SelectedTheme.TextColor
-			396abc.Main.Topbar.Divider.BackgroundColor3 = SelectedTheme.ElementStroke
+			tuncaysgyat.Main.Topbar.Settings.ImageColor3 = SelectedTheme.TextColor
+			tuncaysgyat.Main.Topbar.Divider.BackgroundColor3 = SelectedTheme.ElementStroke
 		end
 
 		Main.Search.BackgroundColor3 = SelectedTheme.TextColor
@@ -697,7 +697,7 @@ local globalSuccess, globalResult = pcall(function()
 			Main.Notice.BackgroundColor3 = SelectedTheme.Background
 		end
 
-		for _, text in ipairs(396abc:GetDescendants()) do
+		for _, text in ipairs(tuncaysgyat:GetDescendants()) do
 			if text.Parent.Parent ~= Notifications then
 				if text:IsA('TextLabel') or text:IsA('TextBox') then text.TextColor3 = SelectedTheme.TextColor end
 			end
@@ -832,10 +832,10 @@ local globalSuccess, globalResult = pcall(function()
 		local success, Data = pcall(function() return HttpService:JSONDecode(Configuration) end)
 		local changed
 
-		if not success then warn('396abc had an issue decoding the configuration file, please try delete the file and reopen 396abc.') return end
+		if not success then warn('tuncaysgyat had an issue decoding the configuration file, please try delete the file and reopen tuncaysgyat.') return end
 
 		-- Iterate through current UI elements' flags
-		for FlagName, Flag in pairs(396abcLibrary.Flags) do
+		for FlagName, Flag in pairs(tuncaysgyatLibrary.Flags) do
 			local FlagValue = Data[FlagName]
 
 			if (typeof(FlagValue) == 'boolean' and FlagValue == false) or FlagValue then
@@ -851,9 +851,9 @@ local globalSuccess, globalResult = pcall(function()
 					end
 				end)
 			else
-				warn("396abc | Unable to find '"..FlagName.. "' in the save file.")
+				warn("tuncaysgyat | Unable to find '"..FlagName.. "' in the save file.")
 				print("The error above may not be an issue if new elements have been added or not been set values.")
-				--396abcLibrary:Notify({Title = "396abc Flags", Content = "396abc was unable to find '"..FlagName.. "' in the save file. Check https://discord.gg/Epn4J6aBnT for help.", Image = 3944688398})
+				--tuncaysgyatLibrary:Notify({Title = "tuncaysgyat Flags", Content = "tuncaysgyat was unable to find '"..FlagName.. "' in the save file. Check sirius.menu/discord for help.", Image = 3944688398})
 			end
 		end
 
@@ -868,7 +868,7 @@ local globalSuccess, globalResult = pcall(function()
 		end
 
 		local Data = {}
-		for i, v in pairs(396abcLibrary.Flags) do
+		for i, v in pairs(tuncaysgyatLibrary.Flags) do
 			if v.Type == "ColorPicker" then
 				Data[i] = PackColor(v.Color)
 			else
@@ -909,7 +909,7 @@ local globalSuccess, globalResult = pcall(function()
 		end
 	end
 
-	function 396abcLibrary:Notify(data) -- action e.g open messages
+	function tuncaysgyatLibrary:Notify(data) -- action e.g open messages
 		task.spawn(function()
 
 			-- Notification Object Creation
@@ -959,8 +959,8 @@ local globalSuccess, globalResult = pcall(function()
 			newNotification.Visible = true
 
 			if data.Actions then
-				warn('396abc | Not seeing your actions in notifications?')
-				print("Notification Actions are being sunset for now, keep up to date on when they're back in the discord. (https://discord.gg/Epn4J6aBnT)")
+				warn('tuncaysgyat | Not seeing your actions in notifications?')
+				print("Notification Actions are being sunset for now, keep up to date on when they're back in the discord. (sirius.menu/discord)")
 			end
 
 			-- Calculate textbounds and set initial values
@@ -1085,9 +1085,9 @@ local globalSuccess, globalResult = pcall(function()
 		Debounce = true
 		if notify then
 			if useMobilePrompt then 
-				396abcLibrary:Notify({Title = "Interface Hidden", Content = "The interface has been hidden, you can unhide the interface by tapping 'Show 396abc'.", Duration = 7, Image = 4400697855})
+				tuncaysgyatLibrary:Notify({Title = "Interface Hidden", Content = "The interface has been hidden, you can unhide the interface by tapping 'Show tuncaysgyat'.", Duration = 7, Image = 4400697855})
 			else
-				396abcLibrary:Notify({Title = "Interface Hidden", Content = `The interface has been hidden, you can unhide the interface by tapping {settingsTable.General.396abcOpen.Value or 'K'}.`, Duration = 7, Image = 4400697855})
+				tuncaysgyatLibrary:Notify({Title = "Interface Hidden", Content = `The interface has been hidden, you can unhide the interface by tapping {settingsTable.General.tuncaysgyatOpen.Value or 'K'}.`, Duration = 7, Image = 4400697855})
 			end
 		end
 
@@ -1381,7 +1381,7 @@ local globalSuccess, globalResult = pcall(function()
 				end
 			end
 			if writefile then
-				writefile(396abcFolder..'/settings'..ConfigurationExtension, encoded)
+				writefile(tuncaysgyatFolder..'/settings'..ConfigurationExtension, encoded)
 			end
 		end
 	end
@@ -1394,14 +1394,14 @@ local globalSuccess, globalResult = pcall(function()
 			return
 		end
 
-		local newTab = window:CreateTab('396abc Settings', 0, true)
+		local newTab = window:CreateTab('tuncaysgyat Settings', 0, true)
 
-		if TabList['396abc Settings'] then
-			TabList['396abc Settings'].LayoutOrder = 1000
+		if TabList['tuncaysgyat Settings'] then
+			TabList['tuncaysgyat Settings'].LayoutOrder = 1000
 		end
 
-		if Elements['396abc Settings'] then
-			Elements['396abc Settings'].LayoutOrder = 1000
+		if Elements['tuncaysgyat Settings'] then
+			Elements['tuncaysgyat Settings'].LayoutOrder = 1000
 		end
 
 		-- Create sections and elements
@@ -1452,28 +1452,28 @@ local globalSuccess, globalResult = pcall(function()
 		updateSettings()
 	end
 
-	function 396abcLibrary:CreateWindow(Settings)
-		if 396abc:FindFirstChild('Loading') then
-			if getgenv and not getgenv().396abcCached then
-				396abc.Enabled = true
-				396abc.Loading.Visible = true
+	function tuncaysgyatLibrary:CreateWindow(Settings)
+		if tuncaysgyat:FindFirstChild('Loading') then
+			if getgenv and not getgenv().tuncaysgyatCached then
+				tuncaysgyat.Enabled = true
+				tuncaysgyat.Loading.Visible = true
 
 				task.wait(1.4)
-				396abc.Loading.Visible = false
+				tuncaysgyat.Loading.Visible = false
 			end
 		end
 
-		if getgenv then getgenv().396abcCached = true end
+		if getgenv then getgenv().tuncaysgyatCached = true end
 
 		if not correctBuild and not Settings.DisableBuildWarnings then
 			task.delay(3, 
 				function() 
-					396abcLibrary:Notify({Title = 'Build Mismatch', Content = '396abc may encounter issues as you are running an incompatible interface version ('.. ((396abc:FindFirstChild('Build') and 396abc.Build.Value) or 'No Build') ..').\n\nThis version of 396abc is intended for interface build '..InterfaceBuild..'.\n\nTry rejoining and then run the script twice.', Image = 4335487866, Duration = 15})		
+					tuncaysgyatLibrary:Notify({Title = 'Build Mismatch', Content = 'tuncaysgyat may encounter issues as you are running an incompatible interface version ('.. ((tuncaysgyat:FindFirstChild('Build') and tuncaysgyat.Build.Value) or 'No Build') ..').\n\nThis version of tuncaysgyat is intended for interface build '..InterfaceBuild..'.\n\nTry rejoining and then run the script twice.', Image = 4335487866, Duration = 15})		
 				end)
 		end
 
-		if isfolder and not isfolder(396abcFolder) then
-			makefolder(396abcFolder)
+		if isfolder and not isfolder(tuncaysgyatFolder) then
+			makefolder(tuncaysgyatFolder)
 		end
 
 		local Passthrough = false
@@ -1489,11 +1489,11 @@ local globalSuccess, globalResult = pcall(function()
 		LoadingFrame.Subtitle.TextTransparency = 1
 
 		LoadingFrame.Version.TextTransparency = 1
-		LoadingFrame.Title.Text = Settings.LoadingTitle or "396abc"
+		LoadingFrame.Title.Text = Settings.LoadingTitle or "tuncaysgyat"
 		LoadingFrame.Subtitle.Text = Settings.LoadingSubtitle or "Interface Suite"
 
-		if Settings.LoadingTitle ~= "396abc Interface" then
-			LoadingFrame.Version.Text = "396abc UI"
+		if Settings.LoadingTitle ~= "tuncaysgyat Interface Suite" then
+			LoadingFrame.Version.Text = "tuncaysgyat UI"
 		end
 
 		if Settings.Icon and Settings.Icon ~= 0 and Topbar:FindFirstChild('Icon') then
@@ -1538,13 +1538,13 @@ local globalSuccess, globalResult = pcall(function()
 		Elements.Visible = false
 		LoadingFrame.Visible = true
 
-		if not Settings.Disable396abcPrompts then
+		if not Settings.DisabletuncaysgyatPrompts then
 			task.spawn(function()
 				while true do
 					task.wait(math.random(180, 600))
-					396abcLibrary:Notify({
-						Title = "396abc Interface",
-						Content = "Enjoying this UI library? Find it at https://discord.gg/Epn4J6aBnT",
+					tuncaysgyatLibrary:Notify({
+						Title = "tuncaysgyat Interface",
+						Content = "Enjoying this UI library? Find it at sirius.menu/discord",
 						Duration = 7,
 						Image = 4370033185,
 					})
@@ -1586,11 +1586,11 @@ local globalSuccess, globalResult = pcall(function()
 		end
 
 		if Settings.Discord and not useStudio then
-			if isfolder and not isfolder(396abcFolder.."/Discord Invites") then
-				makefolder(396abcFolder.."/Discord Invites")
+			if isfolder and not isfolder(tuncaysgyatFolder.."/Discord Invites") then
+				makefolder(tuncaysgyatFolder.."/Discord Invites")
 			end
 
-			if isfile and not isfile(396abcFolder.."/Discord Invites".."/"..Settings.Discord.Invite..ConfigurationExtension) then
+			if isfile and not isfile(tuncaysgyatFolder.."/Discord Invites".."/"..Settings.Discord.Invite..ConfigurationExtension) then
 				if request then
 					pcall(function()
 						request({
@@ -1610,7 +1610,7 @@ local globalSuccess, globalResult = pcall(function()
 				end
 
 				if Settings.Discord.RememberJoins then -- We do logic this way so if the developer changes this setting, the user still won't be prompted, only new users
-					writefile(396abcFolder.."/Discord Invites".."/"..Settings.Discord.Invite..ConfigurationExtension,"396abc RememberJoins is true for this invite, this invite will not ask you to join again")
+					writefile(tuncaysgyatFolder.."/Discord Invites".."/"..Settings.Discord.Invite..ConfigurationExtension,"tuncaysgyat RememberJoins is true for this invite, this invite will not ask you to join again")
 				end
 			end
 		end
@@ -1621,8 +1621,8 @@ local globalSuccess, globalResult = pcall(function()
 				return
 			end
 
-			if isfolder and not isfolder(396abcFolder.."/Key System") then
-				makefolder(396abcFolder.."/Key System")
+			if isfolder and not isfolder(tuncaysgyatFolder.."/Key System") then
+				makefolder(tuncaysgyatFolder.."/Key System")
 			end
 
 			if typeof(Settings.KeySettings.Key) == "string" then Settings.KeySettings.Key = {Settings.KeySettings.Key} end
@@ -1634,8 +1634,8 @@ local globalSuccess, globalResult = pcall(function()
 						Settings.KeySettings.Key[i] = string.gsub(Settings.KeySettings.Key[i], " ", "")
 					end)
 					if not Success then
-						print("396abc | "..Key.." Error " ..tostring(Response))
-						warn('Check docs.sirius.menu for help with 396abc specific development.')
+						print("tuncaysgyat | "..Key.." Error " ..tostring(Response))
+						warn('Check docs.sirius.menu for help with tuncaysgyat specific development.')
 					end
 				end
 			end
@@ -1644,9 +1644,9 @@ local globalSuccess, globalResult = pcall(function()
 				Settings.KeySettings.FileName = "No file name specified"
 			end
 
-			if isfile and isfile(396abcFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) then
+			if isfile and isfile(tuncaysgyatFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) then
 				for _, MKey in ipairs(Settings.KeySettings.Key) do
-					if string.find(readfile(396abcFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension), MKey) then
+					if string.find(readfile(tuncaysgyatFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension), MKey) then
 						Passthrough = true
 					end
 				end
@@ -1654,7 +1654,7 @@ local globalSuccess, globalResult = pcall(function()
 
 			if not Passthrough then
 				local AttemptsRemaining = math.random(2, 5)
-				396abc.Enabled = false
+				tuncaysgyat.Enabled = false
 				local KeyUI = useStudio and script.Parent:FindFirstChild('Key') or game:GetObjects("rbxassetid://11380036235")[1]
 
 				KeyUI.Enabled = true
@@ -1757,9 +1757,9 @@ local globalSuccess, globalResult = pcall(function()
 						KeyMain.Visible = false
 						if Settings.KeySettings.SaveKey then
 							if writefile then
-								writefile(396abcFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension, FoundKey)
+								writefile(tuncaysgyatFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension, FoundKey)
 							end
-							396abcLibrary:Notify({Title = "Key System", Content = "The key for this script has been saved successfully.", Image = 3605522284})
+							tuncaysgyatLibrary:Notify({Title = "Key System", Content = "The key for this script has been saved successfully.", Image = 3605522284})
 						end
 					else
 						if AttemptsRemaining == 0 then
@@ -1805,7 +1805,7 @@ local globalSuccess, globalResult = pcall(function()
 					TweenService:Create(KeyMain.NoteMessage, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
 					TweenService:Create(KeyMain.Hide, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {ImageTransparency = 1}):Play()
 					task.wait(0.51)
-					396abcLibrary:Destroy()
+					tuncaysgyatLibrary:Destroy()
 					KeyUI:Destroy()
 				end)
 			else
@@ -1818,7 +1818,7 @@ local globalSuccess, globalResult = pcall(function()
 
 		Notifications.Template.Visible = false
 		Notifications.Visible = true
-		396abc.Enabled = true
+		tuncaysgyat.Enabled = true
 
 		task.wait(0.5)
 		TweenService:Create(Main, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0}):Play()
@@ -1985,8 +1985,8 @@ local globalSuccess, globalResult = pcall(function()
 						TweenService:Create(Button.ElementIndicator, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
 						TweenService:Create(Button.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 						Button.Title.Text = "Callback Error"
-						print("396abc | "..ButtonSettings.Name.." Callback Error " ..tostring(Response))
-						warn('Check docs.sirius.menu for help with 396abc specific development.')
+						print("tuncaysgyat | "..ButtonSettings.Name.." Callback Error " ..tostring(Response))
+						warn('Check docs.sirius.menu for help with tuncaysgyat specific development.')
 						task.wait(0.5)
 						Button.Title.Text = ButtonSettings.Name
 						TweenService:Create(Button, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2084,7 +2084,7 @@ local globalSuccess, globalResult = pcall(function()
 						TweenService:Create(ColorPicker.HexInput, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {Position = UDim2.new(0, 17, 0, 73)}):Play()
 						TweenService:Create(ColorPicker.Interact, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Size = UDim2.new(0.574, 0, 1, 0)}):Play()
 						TweenService:Create(Main.MainPoint, TweenInfo.new(0.2, Enum.EasingStyle.Exponential), {ImageTransparency = 0}):Play()
-						TweenService:Create(Main, TweenInfo.new(0.2, Enum.EasingStyle.Exponential), {ImageTransparency = SelectedTheme ~= 396abcLibrary.Theme.Default and 0.25 or 0.1}):Play()
+						TweenService:Create(Main, TweenInfo.new(0.2, Enum.EasingStyle.Exponential), {ImageTransparency = SelectedTheme ~= tuncaysgyatLibrary.Theme.Default and 0.25 or 0.1}):Play()
 						TweenService:Create(Background, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0}):Play()
 					else
 						opened = false
@@ -2244,7 +2244,7 @@ local globalSuccess, globalResult = pcall(function()
 
 				if Settings.ConfigurationSaving then
 					if Settings.ConfigurationSaving.Enabled and ColorPickerSettings.Flag then
-						396abcLibrary.Flags[ColorPickerSettings.Flag] = ColorPickerSettings
+						tuncaysgyatLibrary.Flags[ColorPickerSettings.Flag] = ColorPickerSettings
 					end
 				end
 
@@ -2263,7 +2263,7 @@ local globalSuccess, globalResult = pcall(function()
 					TweenService:Create(ColorPicker, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
 				end)
 
-				396abc.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
+				tuncaysgyat.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
 					for _, rgbinput in ipairs(ColorPicker.RGB:GetChildren()) do
 						if rgbinput:IsA("Frame") then
 							rgbinput.BackgroundColor3 = SelectedTheme.InputBackground
@@ -2411,7 +2411,7 @@ local globalSuccess, globalResult = pcall(function()
 					end
 				end
 
-				396abc.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
+				tuncaysgyat.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
 					Label.BackgroundColor3 = IgnoreTheme and (Color or Label.BackgroundColor3) or SelectedTheme.SecondaryElementBackground
 					Label.UIStroke.Color = IgnoreTheme and (Color or Label.BackgroundColor3) or SelectedTheme.SecondaryElementStroke
 				end)
@@ -2447,7 +2447,7 @@ local globalSuccess, globalResult = pcall(function()
 					Paragraph.Content.Text = NewParagraphSettings.Content
 				end
 
-				396abc.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
+				tuncaysgyat.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
 					Paragraph.BackgroundColor3 = SelectedTheme.SecondaryElementBackground
 					Paragraph.UIStroke.Color = SelectedTheme.SecondaryElementStroke
 				end)
@@ -2489,8 +2489,8 @@ local globalSuccess, globalResult = pcall(function()
 						TweenService:Create(Input, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Input.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 						Input.Title.Text = "Callback Error"
-						print("396abc | "..InputSettings.Name.." Callback Error " ..tostring(Response))
-						warn('Check docs.sirius.menu for help with 396abc specific development.')
+						print("tuncaysgyat | "..InputSettings.Name.." Callback Error " ..tostring(Response))
+						warn('Check docs.sirius.menu for help with tuncaysgyat specific development.')
 						task.wait(0.5)
 						Input.Title.Text = InputSettings.Name
 						TweenService:Create(Input, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2533,11 +2533,11 @@ local globalSuccess, globalResult = pcall(function()
 
 				if Settings.ConfigurationSaving then
 					if Settings.ConfigurationSaving.Enabled and InputSettings.Flag then
-						396abcLibrary.Flags[InputSettings.Flag] = InputSettings
+						tuncaysgyatLibrary.Flags[InputSettings.Flag] = InputSettings
 					end
 				end
 
-				396abc.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
+				tuncaysgyat.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
 					Input.InputFrame.BackgroundColor3 = SelectedTheme.InputBackground
 					Input.InputFrame.UIStroke.Color = SelectedTheme.InputStroke
 				end)
@@ -2729,8 +2729,8 @@ local globalSuccess, globalResult = pcall(function()
 								TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 								TweenService:Create(Dropdown.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 								Dropdown.Title.Text = "Callback Error"
-								print("396abc | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
-								warn('Check docs.sirius.menu for help with 396abc specific development.')
+								print("tuncaysgyat | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
+								warn('Check docs.sirius.menu for help with tuncaysgyat specific development.')
 								task.wait(0.5)
 								Dropdown.Title.Text = DropdownSettings.Name
 								TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2763,7 +2763,7 @@ local globalSuccess, globalResult = pcall(function()
 							end
 						end)
 
-						396abc.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
+						tuncaysgyat.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
 							DropdownOption.UIStroke.Color = SelectedTheme.ElementStroke
 						end)
 					end
@@ -2778,7 +2778,7 @@ local globalSuccess, globalResult = pcall(function()
 							droption.BackgroundColor3 = SelectedTheme.DropdownSelected
 						end
 
-						396abc.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
+						tuncaysgyat.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
 							if not table.find(DropdownSettings.CurrentOption, droption.Name) then
 								droption.BackgroundColor3 = SelectedTheme.DropdownUnselected
 							else
@@ -2819,8 +2819,8 @@ local globalSuccess, globalResult = pcall(function()
 						TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Dropdown.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 						Dropdown.Title.Text = "Callback Error"
-						print("396abc | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
-						warn('Check docs.sirius.menu for help with 396abc specific development.')
+						print("tuncaysgyat | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
+						warn('Check docs.sirius.menu for help with tuncaysgyat specific development.')
 						task.wait(0.5)
 						Dropdown.Title.Text = DropdownSettings.Name
 						TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2851,11 +2851,11 @@ local globalSuccess, globalResult = pcall(function()
 
 				if Settings.ConfigurationSaving then
 					if Settings.ConfigurationSaving.Enabled and DropdownSettings.Flag then
-						396abcLibrary.Flags[DropdownSettings.Flag] = DropdownSettings
+						tuncaysgyatLibrary.Flags[DropdownSettings.Flag] = DropdownSettings
 					end
 				end
 
-				396abc.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
+				tuncaysgyat.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
 					Dropdown.Toggle.ImageColor3 = SelectedTheme.TextColor
 					TweenService:Create(Dropdown, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
 				end)
@@ -2940,8 +2940,8 @@ local globalSuccess, globalResult = pcall(function()
 								TweenService:Create(Keybind, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 								TweenService:Create(Keybind.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 								Keybind.Title.Text = "Callback Error"
-								print("396abc | "..KeybindSettings.Name.." Callback Error " ..tostring(Response))
-								warn('Check docs.sirius.menu for help with 396abc specific development.')
+								print("tuncaysgyat | "..KeybindSettings.Name.." Callback Error " ..tostring(Response))
+								warn('Check docs.sirius.menu for help with tuncaysgyat specific development.')
 								task.wait(0.5)
 								Keybind.Title.Text = KeybindSettings.Name
 								TweenService:Create(Keybind, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2982,11 +2982,11 @@ local globalSuccess, globalResult = pcall(function()
 
 				if Settings.ConfigurationSaving then
 					if Settings.ConfigurationSaving.Enabled and KeybindSettings.Flag then
-						396abcLibrary.Flags[KeybindSettings.Flag] = KeybindSettings
+						tuncaysgyatLibrary.Flags[KeybindSettings.Flag] = KeybindSettings
 					end
 				end
 
-				396abc.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
+				tuncaysgyat.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
 					Keybind.KeybindFrame.BackgroundColor3 = SelectedTheme.InputBackground
 					Keybind.KeybindFrame.UIStroke.Color = SelectedTheme.InputStroke
 				end)
@@ -3009,7 +3009,7 @@ local globalSuccess, globalResult = pcall(function()
 				Toggle.Title.TextTransparency = 1
 				Toggle.Switch.BackgroundColor3 = SelectedTheme.ToggleBackground
 
-				if SelectedTheme ~= 396abcLibrary.Theme.Default then
+				if SelectedTheme ~= tuncaysgyatLibrary.Theme.Default then
 					Toggle.Switch.Shadow.Visible = false
 				end
 
@@ -3070,8 +3070,8 @@ local globalSuccess, globalResult = pcall(function()
 						TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 						Toggle.Title.Text = "Callback Error"
-						print("396abc | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
-						warn('Check docs.sirius.menu for help with 396abc specific development.')
+						print("tuncaysgyat | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
+						warn('Check docs.sirius.menu for help with tuncaysgyat specific development.')
 						task.wait(0.5)
 						Toggle.Title.Text = ToggleSettings.Name
 						TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -3120,8 +3120,8 @@ local globalSuccess, globalResult = pcall(function()
 						TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 						Toggle.Title.Text = "Callback Error"
-						print("396abc | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
-						warn('Check docs.sirius.menu for help with 396abc specific development.')
+						print("tuncaysgyat | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
+						warn('Check docs.sirius.menu for help with tuncaysgyat specific development.')
 						task.wait(0.5)
 						Toggle.Title.Text = ToggleSettings.Name
 						TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -3136,16 +3136,16 @@ local globalSuccess, globalResult = pcall(function()
 				if not ToggleSettings.Ext then
 					if Settings.ConfigurationSaving then
 						if Settings.ConfigurationSaving.Enabled and ToggleSettings.Flag then
-							396abcLibrary.Flags[ToggleSettings.Flag] = ToggleSettings
+							tuncaysgyatLibrary.Flags[ToggleSettings.Flag] = ToggleSettings
 						end
 					end
 				end
 
 
-				396abc.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
+				tuncaysgyat.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
 					Toggle.Switch.BackgroundColor3 = SelectedTheme.ToggleBackground
 
-					if SelectedTheme ~= 396abcLibrary.Theme.Default then
+					if SelectedTheme ~= tuncaysgyatLibrary.Theme.Default then
 						Toggle.Switch.Shadow.Visible = false
 					end
 
@@ -3178,7 +3178,7 @@ local globalSuccess, globalResult = pcall(function()
 				Slider.UIStroke.Transparency = 1
 				Slider.Title.TextTransparency = 1
 
-				if SelectedTheme ~= 396abcLibrary.Theme.Default then
+				if SelectedTheme ~= tuncaysgyatLibrary.Theme.Default then
 					Slider.Main.Shadow.Visible = false
 				end
 
@@ -3269,8 +3269,8 @@ local globalSuccess, globalResult = pcall(function()
 									TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 									TweenService:Create(Slider.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 									Slider.Title.Text = "Callback Error"
-									print("396abc | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
-									warn('Check docs.sirius.menu for help with 396abc specific development.')
+									print("tuncaysgyat | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
+									warn('Check docs.sirius.menu for help with tuncaysgyat specific development.')
 									task.wait(0.5)
 									Slider.Title.Text = SliderSettings.Name
 									TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -3303,8 +3303,8 @@ local globalSuccess, globalResult = pcall(function()
 						TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Slider.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {Transparency = 1}):Play()
 						Slider.Title.Text = "Callback Error"
-						print("396abc | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
-						warn('Check docs.sirius.menu for help with 396abc specific development.')
+						print("tuncaysgyat | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
+						warn('Check docs.sirius.menu for help with tuncaysgyat specific development.')
 						task.wait(0.5)
 						Slider.Title.Text = SliderSettings.Name
 						TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -3319,12 +3319,12 @@ local globalSuccess, globalResult = pcall(function()
 
 				if Settings.ConfigurationSaving then
 					if Settings.ConfigurationSaving.Enabled and SliderSettings.Flag then
-						396abcLibrary.Flags[SliderSettings.Flag] = SliderSettings
+						tuncaysgyatLibrary.Flags[SliderSettings.Flag] = SliderSettings
 					end
 				end
 
-				396abc.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
-					if SelectedTheme ~= 396abcLibrary.Theme.Default then
+				tuncaysgyat.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
+					if SelectedTheme ~= tuncaysgyatLibrary.Theme.Default then
 						Slider.Main.Shadow.Visible = false
 					end
 
@@ -3337,7 +3337,7 @@ local globalSuccess, globalResult = pcall(function()
 				return SliderSettings
 			end
 
-			396abc.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
+			tuncaysgyat.Main:GetPropertyChangedSignal('BackgroundColor3'):Connect(function()
 				TabButton.UIStroke.Color = SelectedTheme.TabStroke
 
 				if Elements.UIPageLayout.CurrentPage == TabPage then
@@ -3405,9 +3405,9 @@ local globalSuccess, globalResult = pcall(function()
 		function Window.ModifyTheme(NewTheme)
 			local success = pcall(ChangeTheme, NewTheme)
 			if not success then
-				396abcLibrary:Notify({Title = 'Unable to Change Theme', Content = 'We are unable find a theme on file.', Image = 4400704299})
+				tuncaysgyatLibrary:Notify({Title = 'Unable to Change Theme', Content = 'We are unable find a theme on file.', Image = 4400704299})
 			else
-				396abcLibrary:Notify({Title = 'Theme Changed', Content = 'Successfully changed theme to '..(typeof(NewTheme) == 'string' and NewTheme or 'Custom Theme')..'.', Image = 4483362748})
+				tuncaysgyatLibrary:Notify({Title = 'Theme Changed', Content = 'Successfully changed theme to '..(typeof(NewTheme) == 'string' and NewTheme or 'Custom Theme')..'.', Image = 4483362748})
 			end
 		end
 
@@ -3415,7 +3415,7 @@ local globalSuccess, globalResult = pcall(function()
 			createSettings(Window)
 		end)
 
-		if not success then warn('396abc had an issue creating settings.') end
+		if not success then warn('tuncaysgyat had an issue creating settings.') end
 
 		windowCreated = true
 		return Window
@@ -3432,17 +3432,17 @@ local globalSuccess, globalResult = pcall(function()
 		end
 	end
 
-	function 396abcLibrary:SetVisibility(visibility: boolean)
+	function tuncaysgyatLibrary:SetVisibility(visibility: boolean)
 		setVisibility(visibility, false)
 	end
 
-	function 396abcLibrary:IsVisible(): boolean
+	function tuncaysgyatLibrary:IsVisible(): boolean
 		return not Hidden
 	end
 
-	function 396abcLibrary:Destroy()
+	function tuncaysgyatLibrary:Destroy()
 		hideHotkeyConnection:Disconnect()
-		396abc:Destroy()
+		tuncaysgyat:Destroy()
 	end
 
 	Topbar.ChangeSize.MouseButton1Click:Connect(function()
@@ -3525,7 +3525,7 @@ local globalSuccess, globalResult = pcall(function()
 					end
 				end
 
-				Elements.UIPageLayout:JumpTo(Elements['396abc Settings'])
+				Elements.UIPageLayout:JumpTo(Elements['tuncaysgyat Settings'])
 			end)
 		end)
 
@@ -3537,7 +3537,7 @@ local globalSuccess, globalResult = pcall(function()
 	end)
 
 	hideHotkeyConnection = UserInputService.InputBegan:Connect(function(input, processed)
-		if (input.KeyCode == Enum.KeyCode[settingsTable.General.396abcOpen.Value or 'K'] and not processed) then
+		if (input.KeyCode == Enum.KeyCode[settingsTable.General.tuncaysgyatOpen.Value or 'K'] and not processed) then
 			if Debounce then return end
 			if Hidden then
 				Hidden = false
@@ -3572,7 +3572,7 @@ local globalSuccess, globalResult = pcall(function()
 	end
 
 
-	function 396abcLibrary:LoadConfiguration()
+	function tuncaysgyatLibrary:LoadConfiguration()
 		local config
 
 		if debugX then
@@ -3599,15 +3599,15 @@ local globalSuccess, globalResult = pcall(function()
 					end
 				else
 					notified = true
-					396abcLibrary:Notify({Title = "396abc Configurations", Content = "We couldn't enable Configuration Saving as you are not using software with filesystem support.", Image = 4384402990})
+					tuncaysgyatLibrary:Notify({Title = "tuncaysgyat Configurations", Content = "We couldn't enable Configuration Saving as you are not using software with filesystem support.", Image = 4384402990})
 				end
 			end)
 
 			if success and loaded and not notified then
-				396abcLibrary:Notify({Title = "396abc Configurations", Content = "The configuration file for this script has been loaded from a previous session.", Image = 4384403532})
+				tuncaysgyatLibrary:Notify({Title = "tuncaysgyat Configurations", Content = "The configuration file for this script has been loaded from a previous session.", Image = 4384403532})
 			elseif not success and not notified then
-				warn('396abc Configurations Error | '..tostring(result))
-				396abcLibrary:Notify({Title = "396abc Configurations", Content = "We've encountered an issue loading your configuration correctly.\n\nCheck the Developer Console for more information.", Image = 4384402990})
+				warn('tuncaysgyat Configurations Error | '..tostring(result))
+				tuncaysgyatLibrary:Notify({Title = "tuncaysgyat Configurations", Content = "We've encountered an issue loading your configuration correctly.\n\nCheck the Developer Console for more information.", Image = 4384402990})
 			end
 		end
 
@@ -3621,9 +3621,9 @@ local globalSuccess, globalResult = pcall(function()
 	--	-- Feel free to place your own script here to see how it'd work in Roblox Studio before running it on your execution software.
 
 
-	--	local Window = 396abcLibrary:CreateWindow({
-	--		Name = "396abc Example Window",
-	--		LoadingTitle = "396abc Interface",
+	--	local Window = tuncaysgyatLibrary:CreateWindow({
+	--		Name = "tuncaysgyat Example Window",
+	--		LoadingTitle = "tuncaysgyat Interface Suite",
 	--		Theme = 'Default',
 	--		Icon = 0,
 	--		LoadingSubtitle = "by Sirius",
@@ -3642,9 +3642,9 @@ local globalSuccess, globalResult = pcall(function()
 	--			Title = "Untitled",
 	--			Subtitle = "Key System",
 	--			Note = "No method of obtaining the key is provided",
-	--			FileName = "Key", -- It is recommended to use something unique as other scripts using 396abc may overwrite your key file
+	--			FileName = "Key", -- It is recommended to use something unique as other scripts using tuncaysgyat may overwrite your key file
 	--			SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
-	--			GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like 396abc to get the key from
+	--			GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like tuncaysgyat to get the key from
 	--			Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
 	--		}
 	--	})
@@ -3691,7 +3691,7 @@ local globalSuccess, globalResult = pcall(function()
 	--	})
 
 
-	--	--396abcLibrary:Notify({Title = "396abc Interface", Content = "Welcome to 396abc. These - are the brand new notification design for 396abc, with custom sizing and 396abc calculated wait times.", Image = 4483362458})
+	--	--tuncaysgyatLibrary:Notify({Title = "tuncaysgyat Interface", Content = "Welcome to tuncaysgyat. These - are the brand new notification design for tuncaysgyat, with custom sizing and tuncaysgyat calculated wait times.", Image = 4483362458})
 
 	--	local Section = Tab:CreateSection("Section Example")
 
@@ -3749,7 +3749,7 @@ local globalSuccess, globalResult = pcall(function()
 	--	})
 
 	--	local thoptions = {}
-	--	for themename, theme in pairs(396abcLibrary.Theme) do
+	--	for themename, theme in pairs(tuncaysgyatLibrary.Theme) do
 	--		table.insert(thoptions, themename)
 	--	end
 
@@ -3850,7 +3850,7 @@ local globalSuccess, globalResult = pcall(function()
 	end
 
 	task.delay(4, function() 
-		396abcLibrary.LoadConfiguration()
+		tuncaysgyatLibrary.LoadConfiguration()
 		if Main:FindFirstChild('Notice') and Main.Notice.Visible then 
 			TweenService:Create(Main.Notice, TweenInfo.new(0.5, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {Size = UDim2.new(0, 100, 0, 25), Position = UDim2.new(0.5, 0, 0, -100), BackgroundTransparency = 1}):Play()
 			TweenService:Create(Main.Notice.Title, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {TextTransparency = 1}):Play()
@@ -3860,14 +3860,14 @@ local globalSuccess, globalResult = pcall(function()
 		end
 	end)
 
-	return 396abcLibrary
+	return tuncaysgyatLibrary
 
 end)
 
 if not globalSuccess then
 	local errorHandling = not useStudio and game:GetObjects("rbxassetid://89663359414810")[1] or script.Parent.Error
 	local coreGui = game:GetService('CoreGui')
-
+ 
 	if gethui then
 		errorHandling.Parent = gethui()
 	elseif syn and syn.protect_gui then 
@@ -3887,14 +3887,14 @@ if not globalSuccess then
 
 	if not useStudio then
 		request({
-			Url = 'https://discord.gg/Epn4J6aBnT',
+			Url = 'https://error.sirius.menu/report',
 			Method = 'POST',
 			Headers = {
 				["Content-Type"] = "application/json"
 			},
 			Body = HttpService:JSONEncode({
 				error = globalResult or 'No Error',
-				details = 'Couldn\'t create window as 396abc had an error.',
+				details = 'Couldn\'t create window as tuncaysgyat had an error.',
 				fatal = not windowCreated,
 				time = os.date("!%Y-%m-%dT%H:%M:%SZ") or 'Unknown Error Catch Time',
 				script = {
@@ -3907,7 +3907,7 @@ if not globalSuccess then
 		warn('Simulating Error Push')
 	end
 
-	warn('396abc Interface has encountered an error.\nDevelopers have been notified and you can find more information below.\n\n')
+	warn('tuncaysgyat Interface Suite has encountered an error.\nDevelopers have been notified and you can find more information below.\n\n')
 	error(globalResult)
 end
 
