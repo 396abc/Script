@@ -644,12 +644,19 @@ queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/3
 	 loadstring(game:HttpGet(source))()
  end)
 
-cmd.add({"walkonwalls"}, {"wallwalk", "Walk on walls"}, function()
+cmd.add({"walkonwalls"}, {"wallwalk", "funny"}, function()
 	 loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/wallwalker.lua"))()
  end)
 
 cmd.add({"jerk"}, {"jerkoff", "Walk on walls"}, function()
-	 loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))()
+	 local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+    if humanoid.RigType == Enum.HumanoidRigType.R15 then
+        loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))();
+    else
+        loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))();
+end
  end)
 
  cmd.add({"executor"}, {"executor", "Very simple executor"}, function()
