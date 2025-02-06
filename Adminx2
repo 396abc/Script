@@ -54,10 +54,10 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
 TeleportService.TeleportInitFailed:Connect(function()
-    queue_on_teleport([[loadstring(game:HttpGet("https://your-script-link.com/script.lua"))()]])
+    queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/Adminx2"))()]])
 end)
 
-queue_on_teleport([[loadstring(game:HttpGet("https://your-script-link.com/script.lua"))()]])
+queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/Adminx2"))()]])
 
 
 
