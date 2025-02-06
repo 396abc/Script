@@ -49,6 +49,20 @@
  end
  end
  
+local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+TeleportService.TeleportInitFailed:Connect(function()
+    queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/AdminX"))()]])
+end)
+
+queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/AdminX"))()]])
+
+
+
+
+
  -- [[ PREFIX AND OTHER STUFF. ]] -- 
  local opt = {
 	 prefix = readfile("Admin-X/Prefix.txt", ';'), -- If player's executor has the custom file function support it reads the prefix file to get prefix
