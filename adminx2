@@ -157,7 +157,7 @@ function CHMS(plr)
                     a.ZIndex = 10
                     a.Size = n.Size
                     a.Transparency = 0.3
-                    a.Color = BrickColor.new("Really red")
+                    a.Color = BrickColor.new("Really White")
                 end
             end
 
@@ -729,7 +729,7 @@ cmd.add({"chams"}, {"Allows you to see players through walls"}, function()
     end
 end)
 
-cmd.add({"unchams", "nochams"}, {"Removes chams"}, function()
+cmd.add({"unchams", "nochams"}, {"nochams"}, function()
     CHMSenabled = false
     for _, player in ipairs(Players:GetPlayers()) do
         for _, v in ipairs(CoreGui:GetChildren()) do
