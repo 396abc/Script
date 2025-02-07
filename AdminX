@@ -655,7 +655,7 @@ local humanoid = character:WaitForChild("Humanoid")
     if humanoid.RigType == Enum.HumanoidRigType.R15 then
  loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))();
     else
-        loadstring(game:HttpGet("https://pastefy.app/lawnvcTT/raw"))();
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/toiletboys"))();
 end
  end)
 
