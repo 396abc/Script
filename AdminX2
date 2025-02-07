@@ -657,7 +657,6 @@ local humanoid = character:WaitForChild("Humanoid")
     else
         loadstring(game:HttpGet("https://pastefy.app/lawnvcTT/raw"))();
 end
- loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))();
  end)
 
  cmd.add({"executor"}, {"executor", "Very simple executor"}, function()
