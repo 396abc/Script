@@ -17,7 +17,41 @@
 	 Loaded.Wait(Loaded);
 	 wait(1.5)
  end
- 
+
+CHMSenabled = false
+
+function CHMS(plr)
+    task.spawn(function()
+        for i, v in pairs(COREGUI:GetChildren()) do
+            if v.Name == plr.Name .. '_CHMS' then
+                v:Destroy()
+            end
+        end
+        wait()
+        if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not COREGUI:FindFirstChild(plr.Name .. '_CHMS') then
+            local ESPholder = Instance.new("Folder")
+            ESPholder.Name = plr.Name .. '_CHMS'
+            ESPholder.Parent = COREGUI
+            repeat wait(1) until plr.Character and plr.Character:FindFirstChildOfClass("Humanoid")
+
+            for _, n in pairs(plr.Character:GetChildren()) do
+                if n:IsA("BasePart") then
+                    local a = Instance.new("BoxHandleAdornment")
+                    a.Name = plr.Name
+                    a.Parent = ESPholder
+                    a.Adornee = n
+                    a.AlwaysOnTop = true
+                    a.ZIndex = 10
+                    a.Size = n.Size
+                    a.Transparency = 0.3
+                    a.Color = plr.TeamColor
+                end
+            end
+        end
+    end)
+end
+
+
  -- Notification library
  local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/notificationtest"))();
  local Notify = Notification.Notify;
@@ -638,39 +672,6 @@ queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/3
 	 end
 	 return players
  end
-
-CHMSenabled = false
-
-function CHMS(plr)
-    task.spawn(function()
-        for i, v in pairs(COREGUI:GetChildren()) do
-            if v.Name == plr.Name .. '_CHMS' then
-                v:Destroy()
-            end
-        end
-        wait()
-        if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not COREGUI:FindFirstChild(plr.Name .. '_CHMS') then
-            local ESPholder = Instance.new("Folder")
-            ESPholder.Name = plr.Name .. '_CHMS'
-            ESPholder.Parent = COREGUI
-            repeat wait(1) until plr.Character and plr.Character:FindFirstChildOfClass("Humanoid")
-
-            for _, n in pairs(plr.Character:GetChildren()) do
-                if n:IsA("BasePart") then
-                    local a = Instance.new("BoxHandleAdornment")
-                    a.Name = plr.Name
-                    a.Parent = ESPholder
-                    a.Adornee = n
-                    a.AlwaysOnTop = true
-                    a.ZIndex = 10
-                    a.Size = n.Size
-                    a.Transparency = 0.3
-                    a.Color = plr.TeamColor
-                end
-            end
-        end
-    end)
-end
 
 
  --[[ COMMANDS ]]--
