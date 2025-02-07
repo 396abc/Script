@@ -659,42 +659,31 @@ local humanoid = character:WaitForChild("Humanoid")
 end
  end)
 
-cmd.add({"chams"}, {"chams", "ESP but without text in the way"}, function()
+cmd.add({"chams"}, {"chams", "Allows you to see players through walls"}, function()
     for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
         if player.Character and player ~= game.Players.LocalPlayer then
             for _, part in ipairs(player.Character:GetDescendants()) do
-                if part:IsA("BasePart") then
-                    local highlight = Instance.new("Highlight")
-                    highlight.Parent = part
-                    highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Red color for visibility
-                    highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- White outline
-                    highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-                    highlight.Adornee = part
-                    highlight.Name = "ChamEffect"
+                if part:IsA("BasePart") and part.Transparency < 1 then
+                    part.LocalTransparencyModifier = 0.3 -- Adjust this for visibility
                 end
             end
         end
     end
-    Notify({ Description = "Chams enabled"; Title = "Admin X"; Duration = 5 })
+    Notify({ Description = "Chams enabled - You can now see players through walls"; Title = "Admin X"; Duration = 5 })
 end)
 
-cmd.add({"unchams", "nochams"}, {"unchams (nochams)", "Removes chams"}, function()
+cmd.add({"unchams", "nochams"}, {"unchams (nochams)", "Restores normal player visibility"}, function()
     for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
         if player.Character and player ~= game.Players.LocalPlayer then
             for _, part in ipairs(player.Character:GetDescendants()) do
                 if part:IsA("BasePart") then
-                    for _, child in ipairs(part:GetChildren()) do
-                        if child:IsA("Highlight") and child.Name == "ChamEffect" then
-                            child:Destroy()
-                        end
-                    end
+                    part.LocalTransparencyModifier = 0 -- Reset transparency
                 end
             end
         end
     end
-    Notify({ Description = "Chams disabled"; Title = "Admin X"; Duration = 5 })
+    Notify({ Description = "Chams disabled - Players are back to normal"; Title = "Admin X"; Duration = 5 })
 end)
-
 
  cmd.add({"executor"}, {"executor", "Very simple executor"}, function()
 	 loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/executor"))()
