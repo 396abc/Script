@@ -129,7 +129,64 @@ queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/3
  
  local NormalSpin = true
  
- 
+ local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui")
+
+CHMSenabled = false
+
+function CHMS(plr)
+    task.spawn(function()
+        for i, v in pairs(CoreGui:GetChildren()) do
+            if v.Name == plr.Name .. '_CHMS' then
+                v:Destroy()
+            end
+        end
+        wait()
+        if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not CoreGui:FindFirstChild(plr.Name .. '_CHMS') then
+            local ESPholder = Instance.new("Folder")
+            ESPholder.Name = plr.Name .. '_CHMS'
+            ESPholder.Parent = CoreGui
+            repeat wait(1) until plr.Character and plr.Character:FindFirstChildOfClass("Humanoid")
+            for _, n in pairs(plr.Character:GetChildren()) do
+                if n:IsA("BasePart") then
+                    local a = Instance.new("BoxHandleAdornment")
+                    a.Name = plr.Name
+                    a.Parent = ESPholder
+                    a.Adornee = n
+                    a.AlwaysOnTop = true
+                    a.ZIndex = 10
+                    a.Size = n.Size
+                    a.Transparency = 0.3
+                    a.Color = BrickColor.new("Really White")
+                end
+            end
+
+            -- Character and team change handling
+            local addedFunc
+            local teamChange
+
+            addedFunc = plr.CharacterAdded:Connect(function()
+                if CHMSenabled then
+                    ESPholder:Destroy()
+                    teamChange:Disconnect()
+                    repeat wait(1) until plr.Character and plr.Character:FindFirstChildOfClass("Humanoid")
+                    CHMS(plr)
+                    addedFunc:Disconnect()
+                end
+            end)
+
+            teamChange = plr:GetPropertyChangedSignal("TeamColor"):Connect(function()
+                if CHMSenabled then
+                    ESPholder:Destroy()
+                    repeat wait(1) until plr.Character and plr.Character:FindFirstChildOfClass("Humanoid")
+                    CHMS(plr)
+                    teamChange:Disconnect()
+                end
+            end)
+        end
+    end)
+end
+
  --[[ Some more variables ]]--
  
  local localPlayer = Players.LocalPlayer
@@ -658,6 +715,31 @@ local humanoid = character:WaitForChild("Humanoid")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/toiletboys"))();
 end
  end)
+
+cmd.add({"chams"}, {"Allows you to see players through walls"}, function()
+    if not ESPenabled then
+        CHMSenabled = true
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player ~= Players.LocalPlayer then
+                CHMS(player)
+            end
+        end
+    else
+        Notify({ Description = "Disable ESP (noesp) before using chams"; Title = "Admin X"; Duration = 5 })
+    end
+end)
+
+cmd.add({"unchams", "nochams"}, {"nochams"}, function()
+    CHMSenabled = false
+    for _, player in ipairs(Players:GetPlayers()) do
+        for _, v in ipairs(CoreGui:GetChildren()) do
+            if v.Name == player.Name .. '_CHMS' then
+                v:Destroy()
+            end
+        end
+    end
+    Notify({ Description = "Chams disabled"; Title = "Admin X"; Duration = 5 })
+end)
 
 
  cmd.add({"executor"}, {"executor", "Very simple executor"}, function()
