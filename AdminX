@@ -657,7 +657,6 @@ local humanoid = character:WaitForChild("Humanoid")
     else
         loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/toiletboys"))();
 end
- end)
 
  cmd.add({"executor"}, {"executor", "Very simple executor"}, function()
 	 loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/executor"))()
