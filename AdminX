@@ -659,31 +659,6 @@ local humanoid = character:WaitForChild("Humanoid")
 end
  end)
 
-cmd.add({"chams"}, {"chams", "Allows you to see players through walls"}, function()
-    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
-        if player.Character and player ~= game.Players.LocalPlayer then
-            for _, part in ipairs(player.Character:GetDescendants()) do
-                if part:IsA("BasePart") and part.Transparency < 1 then
-                    part.LocalTransparencyModifier = 0.3 -- Adjust this for visibility
-                end
-            end
-        end
-    end
-    Notify({ Description = "Chams enabled - You can now see players through walls"; Title = "Admin X"; Duration = 5 })
-end)
-
-cmd.add({"unchams", "nochams"}, {"unchams (nochams)", "Restores normal player visibility"}, function()
-    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
-        if player.Character and player ~= game.Players.LocalPlayer then
-            for _, part in ipairs(player.Character:GetDescendants()) do
-                if part:IsA("BasePart") then
-                    part.LocalTransparencyModifier = 0 -- Reset transparency
-                end
-            end
-        end
-    end
-    Notify({ Description = "Chams disabled - Players are back to normal"; Title = "Admin X"; Duration = 5 })
-end)
 
  cmd.add({"executor"}, {"executor", "Very simple executor"}, function()
 	 loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/executor"))()
