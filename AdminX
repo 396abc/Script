@@ -659,6 +659,43 @@ local humanoid = character:WaitForChild("Humanoid")
 end
  end)
 
+cmd.add({"chams"}, {"chams", "ESP but without text in the way"}, function()
+    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+        if player.Character and player ~= game.Players.LocalPlayer then
+            for _, part in ipairs(player.Character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    local highlight = Instance.new("Highlight")
+                    highlight.Parent = part
+                    highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Red color for visibility
+                    highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- White outline
+                    highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+                    highlight.Adornee = part
+                    highlight.Name = "ChamEffect"
+                end
+            end
+        end
+    end
+    Notify({ Description = "Chams enabled"; Title = "Admin X"; Duration = 5 })
+end)
+
+cmd.add({"unchams", "nochams"}, {"unchams (nochams)", "Removes chams"}, function()
+    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+        if player.Character and player ~= game.Players.LocalPlayer then
+            for _, part in ipairs(player.Character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    for _, child in ipairs(part:GetChildren()) do
+                        if child:IsA("Highlight") and child.Name == "ChamEffect" then
+                            child:Destroy()
+                        end
+                    end
+                end
+            end
+        end
+    end
+    Notify({ Description = "Chams disabled"; Title = "Admin X"; Duration = 5 })
+end)
+
+
  cmd.add({"executor"}, {"executor", "Very simple executor"}, function()
 	 loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/executor"))()
  end)
