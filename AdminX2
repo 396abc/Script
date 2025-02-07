@@ -639,26 +639,6 @@ queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/3
 	 return players
  end
 
- --[[ COMMANDS ]]--
- cmd.add({"script", "ls", "s", "run"}, {"script <source> (ls, s, run)", "Run the code requested"}, function(source)
-	 loadstring(game:HttpGet(source))()
- end)
-
-cmd.add({"walkonwalls"}, {"wallwalk", "funny"}, function()
-	 loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/wallwalker.lua"))()
- end)
-
-cmd.add({"jerk"}, {"jerkoff", "yes"}, function()
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
-    if humanoid.RigType == Enum.HumanoidRigType.R15 then
- loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))();
-    else
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/toiletboys"))();
-end
- end)
-
 CHMSenabled = false
 
 function CHMS(plr)
@@ -691,6 +671,29 @@ function CHMS(plr)
         end
     end)
 end
+
+
+ --[[ COMMANDS ]]--
+ cmd.add({"script", "ls", "s", "run"}, {"script <source> (ls, s, run)", "Run the code requested"}, function(source)
+	 loadstring(game:HttpGet(source))()
+ end)
+
+cmd.add({"walkonwalls"}, {"wallwalk", "funny"}, function()
+	 loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/wallwalker.lua"))()
+ end)
+
+cmd.add({"jerk"}, {"jerkoff", "yes"}, function()
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+    if humanoid.RigType == Enum.HumanoidRigType.R15 then
+ loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))();
+    else
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/toiletboys"))();
+end
+ end)
+
+
 
 addcmd('chams', {}, function(args, speaker)
     if not ESPenabled then
