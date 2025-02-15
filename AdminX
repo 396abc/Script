@@ -729,7 +729,7 @@ cmd.add({"chams"}, {"Allows you to see players through walls"}, function()
     end
 end)
 
-ccmd.add({"unchams", "nochams"}, {"nochams"}, function()
+cmd.add({"unchams", "nochams"}, {"nochams"}, function()
     CHMSenabled = false
     -- Remove chams for all players currently in the game
     for _, player in ipairs(Players:GetPlayers()) do
