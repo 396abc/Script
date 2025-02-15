@@ -729,8 +729,9 @@ cmd.add({"chams"}, {"Allows you to see players through walls"}, function()
     end
 end)
 
-cmd.add({"unchams", "nochams"}, {"nochams"}, function()
+ccmd.add({"unchams", "nochams"}, {"nochams"}, function()
     CHMSenabled = false
+    -- Remove chams for all players currently in the game
     for _, player in ipairs(Players:GetPlayers()) do
         for _, v in ipairs(CoreGui:GetChildren()) do
             if v.Name == player.Name .. '_CHMS' then
@@ -740,6 +741,16 @@ cmd.add({"unchams", "nochams"}, {"nochams"}, function()
     end
     Notify({ Description = "Chams disabled"; Title = "Admin X"; Duration = 5 })
 end)
+
+-- Detect when a player leaves the game and remove their chams
+Players.PlayerRemoving:Connect(function(player)
+    for _, v in ipairs(CoreGui:GetChildren()) do
+        if v.Name == player.Name .. '_CHMS' then
+            v:Destroy()  -- Remove chams when the player leaves
+        end
+    end
+end)
+
 
 
  cmd.add({"executor"}, {"executor", "Very simple executor"}, function()
