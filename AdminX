@@ -716,6 +716,53 @@ local humanoid = character:WaitForChild("Humanoid")
 end
  end)
 
+local waypoints = {}
+
+cmd.add({"setwaypoint", "sw"}, {"setwaypoint <name> (sw)", "Saves your current position as a waypoint"}, function(name)
+    if not name then
+        Notify({Description = "Please provide a name for the waypoint"; Title = "Waypoint System"; Duration = 5})
+        return
+    end
+
+    local player = game.Players.LocalPlayer
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        waypoints[name] = player.Character.HumanoidRootPart.Position
+        Notify({Description = "Saved waypoint '" .. name .. "'"; Title = "Waypoint System"; Duration = 5})
+    end
+end)
+
+cmd.add({"tpwaypoint", "tpw"}, {"tpwaypoint <name> (tpw)", "Teleports to a saved waypoint"}, function(name)
+    if not name or not waypoints[name] then
+        Notify({Description = "Waypoint not found!"; Title = "Waypoint System"; Duration = 5})
+        return
+    end
+
+    local player = game.Players.LocalPlayer
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(waypoints[name])
+        Notify({Description = "Teleported to waypoint '" .. name .. "'"; Title = "Waypoint System"; Duration = 5})
+    end
+end)
+
+cmd.add({"delwaypoint", "dw"}, {"delwaypoint <name> (dw)", "Deletes a saved waypoint"}, function(name)
+    if not name or not waypoints[name] then
+        Notify({Description = "Waypoint not found!"; Title = "Waypoint System"; Duration = 5})
+        return
+    end
+
+    waypoints[name] = nil
+    Notify({Description = "Deleted waypoint '" .. name .. "'"; Title = "Waypoint System"; Duration = 5})
+end)
+
+cmd.add({"listwaypoints", "lw"}, {"listwaypoints (lw)", "Shows all saved waypoints"}, function()
+    local list = "Waypoints:\n"
+    for name, _ in pairs(waypoints) do
+        list = list .. "- " .. name .. "\n"
+    end
+    Notify({Description = list; Title = "Waypoint System"; Duration = 10})
+end)
+
+
 cmd.add({"chams"}, {"Allows you to see players through walls"}, function()
     if not ESPenabled then
         CHMSenabled = true
