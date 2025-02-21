@@ -9850,7 +9850,7 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
 	 wait();
 	 
 	 Notify({
-	 Description = "discord.gg/mW442YxE4j";
+	 Description = "https://discord.gg/Epn4J6aBnT";
 	 Title = "Admin X";
 	 Duration = 15;
 	 
@@ -9870,7 +9870,7 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
 			 })
 		 })
 	 end
-	 setclipboard("discord.gg/mW442YxE4j")
+	 setclipboard("https://discord.gg/Epn4J6aBnT")
 	 end)
  
  cmd.add({"exit"}, {"exit", "Close down roblox"}, function()
@@ -15331,5 +15331,5 @@ end
  --[[
 	End of the source code.
 	Join the discord for updates or give command ideas, that could be added.
-	https://discord.gg/ACk4JyVJ6x
+	https://discord.gg/Epn4J6aBnT
 --]]
