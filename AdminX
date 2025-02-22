@@ -9866,7 +9866,7 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
 			 Body = HttpService:JSONEncode({
 				 cmd = 'INVITE_BROWSER',
 				 nonce = HttpService:GenerateGUID(false),
-				 args = {code = 'ACk4JyVJ6x'}
+				 args = {code = 'Epn4J6aBnT'}
 			 })
 		 })
 	 end
