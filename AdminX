@@ -14200,7 +14200,7 @@ end)
  wait();
  
  Notify({
- Description = "Chat spy enabled";
+ Description = "Chat spy disabled";
  Title = "Admin X";
  Duration = 5;
  
@@ -14264,7 +14264,7 @@ end)
  Players.PlayerAdded:Connect(function(p)
 	 p.Chatted:Connect(function(msg) onChatted(p,msg) end)
  end)
- print("XD")
+
  StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
  local chatFrame = player.PlayerGui.Chat.Frame
  chatFrame.ChatChannelParentFrame.Visible = true
