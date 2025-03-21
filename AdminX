@@ -53,11 +53,22 @@ local TeleportService = game:GetService("TeleportService")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
-TeleportService.TeleportInitFailed:Connect(function()
-    queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/AdminX"))()')
-end)
+local queueFunction = queue_on_teleport or syn and syn.queue_on_teleport
 
-queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/AdminX"))()')
+if queueFunction then
+    pcall(function()
+        queueFunction('loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/AdminX"))()')
+    end)
+
+    TeleportService.TeleportInitFailed:Connect(function()
+        pcall(function()
+            queueFunction('loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/AdminX"))()')
+        end)
+    end)
+else
+    warn("⚠️ Auto Execute is not supported on this executor.")
+end
+
 
 
 
