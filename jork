@@ -8,6 +8,7 @@ if workspace:FindFirstChild("aaa") then
 	workspace:FindFirstChild("aaa"):Destroy()
 end
 
+-- Only R6
 if hum.RigType == Enum.HumanoidRigType.R6 then
 	local animation = Instance.new("Animation")
 	animation.Name = "aaa"
@@ -15,7 +16,7 @@ if hum.RigType == Enum.HumanoidRigType.R6 then
 	animation.AnimationId = "rbxassetid://72042024"
 
 	local tool = Instance.new("Tool")
-	tool.Name = "Jork"
+	tool.Name = "Jerk"
 	tool.RequiresHandle = false
 	tool.Parent = pack
 
