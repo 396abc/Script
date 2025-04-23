@@ -16,7 +16,7 @@ if hum.RigType == Enum.HumanoidRigType.R15 then
 	animation.AnimationId = "rbxassetid://698251653"
 
 	local tool = Instance.new("Tool")
-	tool.Name = "Jerk"
+	tool.Name = "Jerk R15"
 	tool.RequiresHandle = false
 	tool.Parent = pack
 
