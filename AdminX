@@ -722,7 +722,7 @@ local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
     if humanoid.RigType == Enum.HumanoidRigType.R15 then
- loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))();
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/jork"))();
     else
         loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/toiletboys"))();
 end
