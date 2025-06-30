@@ -1,4 +1,5 @@
 return {
+    Name = "Idle",
 	Properties = {
 		Looping = true,
 		Priority = Enum.AnimationPriority.Action
