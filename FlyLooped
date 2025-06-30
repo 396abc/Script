@@ -1,4 +1,5 @@
 return {
+Name = "Boost",
 	Properties = {
 		Looping = true,
 		Priority = Enum.AnimationPriority.Movement
