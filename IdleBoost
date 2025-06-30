@@ -1,5 +1,5 @@
 return {
-    Name = "Moving",  
+Name = "Moving",  
 	Properties = {
 		Looping = true,
 		Priority = Enum.AnimationPriority.Action
