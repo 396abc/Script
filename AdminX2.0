@@ -5201,6 +5201,11 @@ Command.Add({
         local Root = Character and Character:FindFirstChild("HumanoidRootPart")
         local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
         local Camera = workspace.CurrentCamera
+		         API:Notify({
+                    Description = "Invisibility may need to load first, toggle and re-toggle if not loaded properly.",
+                    Title = "Invisible",
+                    Duration = 5
+                })
 
         if not Character or not Root or not Humanoid then
             API:Notify({
