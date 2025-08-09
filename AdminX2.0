@@ -3705,6 +3705,61 @@ Command.Add({
 	end,
 })
 
+local loopWalkSpeedEnabled = false
+local loopWalkSpeedValue = 16
+
+Command.Add({
+    Aliases = { "loopwalkspeed", "loopws" },
+    Description = "Loops your WalkSpeed to a specific value until disabled",
+    Arguments = {
+        { Name = "Speed", Type = "Number" },
+    },
+    Task = function(speed)
+        if not speed then
+            API:Notify({
+                Description = "Please enter a speed value.",
+                Title = "Loop WalkSpeed",
+                Duration = 5
+            })
+            return
+        end
+
+        loopWalkSpeedValue = speed
+        loopWalkSpeedEnabled = true
+
+        task.spawn(function()
+            while loopWalkSpeedEnabled do
+                local player = game.Players.LocalPlayer
+                if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+                    player.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = loopWalkSpeedValue
+                end
+                task.wait(0.1)
+            end
+        end)
+
+        API:Notify({
+            Description = "Loop WalkSpeed enabled at " .. tostring(speed),
+            Title = "Loop WalkSpeed",
+            Duration = 5
+        })
+    end,
+})
+
+Command.Add({
+    Aliases = { "unloopwalkspeed", "unloopws" },
+    Description = "Disables Loop WalkSpeed",
+    Arguments = {},
+    Task = function()
+        loopWalkSpeedEnabled = false
+        API:Notify({
+            Description = "Loop WalkSpeed disabled",
+            Title = "Loop WalkSpeed",
+            Duration = 5
+        })
+    end,
+})
+
+
 Command.Add({
 	Aliases = { "notify", "send" },
 	Description = "Sends a notification (mostly testing)",
