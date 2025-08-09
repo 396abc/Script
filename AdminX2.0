@@ -5189,63 +5189,81 @@ Command.Add({
 	end,
 })
 
+-- Invisible Command
 Command.Add({
-	Aliases = { "invisible", "invis", "inv" },
-	Description = "Makes your character invisible",
-	Arguments = {},
-	Task = function()
-		local OriginalPlayer = Services.Lighting:FindFirstChild(LocalPlayer.Name)
-		Character.Archivable = true
-		if not OriginalPlayer then
-			local Clone = Clone(Character)
-			local Animate = Clone.Animate
-			for Index, BodyPart in next, GetClasses(Clone, "BasePart", true) do
-				BodyPart.Transparency = 0.7
-			end
+    Aliases = { "invisible", "invis", "inv" },
+    Description = "Makes your character invisible",
+    Arguments = {},
+    Task = function()
+        local OriginalPlayer = game:GetService("Lighting"):FindFirstChild(game.Players.LocalPlayer.Name)
+        local Character = game.Players.LocalPlayer.Character
+        local Root = Character:FindFirstChild("HumanoidRootPart")
+        local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+        local Camera = workspace.CurrentCamera
 
-			Root.CFrame = CFrame.new(1000, 1000, 1000)
-			Wait(0.1)
-			Root.Anchored = true
-			Clone.Parent = Character.Parent
-			Character.Parent = Services.Lighting
-			LocalPlayer.Character = Clone
+        Character.Archivable = true
+        if not OriginalPlayer then
+            local Clone = Character:Clone()
+            local Animate = Clone:FindFirstChild("Animate")
+            for _, BodyPart in ipairs(Clone:GetDescendants()) do
+                if BodyPart:IsA("BasePart") then
+                    BodyPart.Transparency = 0.7
+                end
+            end
 
-			Animate.Disabled = true
-			Animate.Disabled = false
+            Root.CFrame = CFrame.new(1000, 1000, 1000)
+            task.wait(0.1)
+            Root.Anchored = true
+            Clone.Parent = Character.Parent
+            Character.Parent = game:GetService("Lighting")
+            game.Players.LocalPlayer.Character = Clone
 
-			Character = Clone
-			Root = GetRoot(LocalPlayer)
-			Humanoid = GetHumanoid(LocalPlayer)
-			Camera.CameraSubject = Humanoid
-		end
-	end,
+            if Animate then
+                Animate.Disabled = true
+                Animate.Disabled = false
+            end
+
+            Character = Clone
+            Root = Character:FindFirstChild("HumanoidRootPart")
+            Humanoid = Character:FindFirstChildOfClass("Humanoid")
+            Camera.CameraSubject = Humanoid
+        end
+    end,
 })
 
+-- Visible Command
 Command.Add({
-	Aliases = { "visible", "vis" },
-	Description = "Makes your character visible (disables invisible)",
-	Arguments = {},
-	Task = function()
-		local OriginalPlayer = Services.Lighting:FindFirstChild(LocalPlayer.Name)
-		if OriginalPlayer then
-			local Invisible = LocalPlayer.Character
-			local Parent = Invisible.Parent
-			local Position = Root.CFrame
+    Aliases = { "visible", "vis" },
+    Description = "Makes your character visible (disables invisible)",
+    Arguments = {},
+    Task = function()
+        local LocalPlayer = game.Players.LocalPlayer
+        local Character = LocalPlayer.Character
+        local Root = Character:FindFirstChild("HumanoidRootPart")
+        local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+        local Camera = workspace.CurrentCamera
 
-			LocalPlayer.Character = OriginalPlayer
-			LocalPlayer.Character.Parent = Parent
-			Character = OriginalPlayer
-			Root = GetRoot(LocalPlayer)
-			Humanoid = GetHumanoid(LocalPlayer)
+        local OriginalPlayer = game:GetService("Lighting"):FindFirstChild(LocalPlayer.Name)
+        if OriginalPlayer then
+            local Invisible = Character
+            local Parent = Invisible.Parent
+            local Position = Root.CFrame
 
-			Wait(0.1)
-			Root.Anchored = false
-			Root.CFrame = Position
-			Camera.CameraSubject = Humanoid
-			Destroy(Invisible)
-		end
-	end,
+            LocalPlayer.Character = OriginalPlayer
+            LocalPlayer.Character.Parent = Parent
+            Character = OriginalPlayer
+            Root = Character:FindFirstChild("HumanoidRootPart")
+            Humanoid = Character:FindFirstChildOfClass("Humanoid")
+
+            task.wait(0.1)
+            Root.Anchored = false
+            Root.CFrame = Position
+            Camera.CameraSubject = Humanoid
+            Invisible:Destroy()
+        end
+    end,
 })
+
 
 Command.Add({
 	Aliases = { "sit" },
