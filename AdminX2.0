@@ -5189,45 +5189,80 @@ Command.Add({
 	end,
 })
 
--- Invisible Command
+-- Invisible Command (Improved with safety checks & fail notification)
 Command.Add({
     Aliases = { "invisible", "invis", "inv" },
     Description = "Makes your character invisible",
     Arguments = {},
     Task = function()
-        local OriginalPlayer = game:GetService("Lighting"):FindFirstChild(game.Players.LocalPlayer.Name)
-        local Character = game.Players.LocalPlayer.Character
-        local Root = Character:FindFirstChild("HumanoidRootPart")
-        local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+        local LocalPlayer = game.Players.LocalPlayer
+        local Lighting = game:GetService("Lighting")
+        local Character = LocalPlayer.Character
+        local Root = Character and Character:FindFirstChild("HumanoidRootPart")
+        local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
         local Camera = workspace.CurrentCamera
 
-        Character.Archivable = true
-        if not OriginalPlayer then
-            local Clone = Character:Clone()
-            local Animate = Clone:FindFirstChild("Animate")
-            for _, BodyPart in ipairs(Clone:GetDescendants()) do
-                if BodyPart:IsA("BasePart") then
-                    BodyPart.Transparency = 0.7
-                end
-            end
+        if not Character or not Root or not Humanoid then
+            API:Notify({
+                Description = "Could not make you invisible — character not ready.",
+                Title = "Invisible",
+                Duration = 5
+            })
+            return
+        end
 
+        if Lighting:FindFirstChild(LocalPlayer.Name) then
+            API:Notify({
+                Description = "Already invisible.",
+                Title = "Invisible",
+                Duration = 5
+            })
+            return
+        end
+
+        Character.Archivable = true
+        local Clone = Character:Clone()
+        local Animate = Clone:FindFirstChild("Animate")
+        for _, BodyPart in ipairs(Clone:GetDescendants()) do
+            if BodyPart:IsA("BasePart") then
+                BodyPart.Transparency = 0.7
+            end
+        end
+
+        -- Try moving far away before swap
+        if Root then
             Root.CFrame = CFrame.new(1000, 1000, 1000)
             task.wait(0.1)
             Root.Anchored = true
-            Clone.Parent = Character.Parent
-            Character.Parent = game:GetService("Lighting")
-            game.Players.LocalPlayer.Character = Clone
-
-            if Animate then
-                Animate.Disabled = true
-                Animate.Disabled = false
-            end
-
-            Character = Clone
-            Root = Character:FindFirstChild("HumanoidRootPart")
-            Humanoid = Character:FindFirstChildOfClass("Humanoid")
-            Camera.CameraSubject = Humanoid
         end
+
+        Clone.Parent = Character.Parent
+        Character.Parent = Lighting
+        LocalPlayer.Character = Clone
+
+        if Animate then
+            Animate.Disabled = true
+            Animate.Disabled = false
+        end
+
+        -- Update references
+        Character = Clone
+        Root = Character:FindFirstChild("HumanoidRootPart")
+        Humanoid = Character:FindFirstChildOfClass("Humanoid")
+        Camera.CameraSubject = Humanoid
+
+        -- Safety check: If invis failed, revert
+        task.delay(1, function()
+            if not Lighting:FindFirstChild(LocalPlayer.Name) then
+                API:Notify({
+                    Description = "Invisibility failed, reverting to visible.",
+                    Title = "Invisible",
+                    Duration = 5
+                })
+                LocalPlayer.Character = Character
+                if Root then Root.Anchored = false end
+            end
+        end)
     end,
 })
 
@@ -5263,7 +5298,6 @@ Command.Add({
         end
     end,
 })
-
 
 Command.Add({
 	Aliases = { "sit" },
