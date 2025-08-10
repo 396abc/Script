@@ -3709,7 +3709,7 @@ local loopWalkSpeedEnabled = false
 local loopWalkSpeedValue = 16
 
 Command.Add({
-    Aliases = { "loopwalkspeed", "loopws" },
+    Aliases = { "loopwalkspeed", "loopws", "loopspeed" },
     Description = "Loops your WalkSpeed to a specific value until disabled",
     Arguments = {
         { Name = "Speed", Type = "Number" },
@@ -6176,7 +6176,7 @@ Command.Add({
 })
 
 Command.Add({
-	Aliases = { "walkspeed", "ws" },
+	Aliases = { "walkspeed", "ws", "speed" },
 	Description = "Set your character's walkspeed (tpwalk recommended instead)",
 	Arguments = {
 		{ Name = "Amount", Type = "Number" },
