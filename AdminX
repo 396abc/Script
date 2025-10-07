@@ -379,54 +379,54 @@ local function setupStaffCommandDetection()
     end
     
     -- Function to parse and notify about commands
-    local function checkForStaffCommand(player, message)
-        -- Check if message starts with staff prefix
-        local prefix = message:sub(1, 1)
-        if not table.find(StaffPrefixes, prefix) then
-            return
-        end
-        
-        -- Extract command and arguments
-        local fullCommand = message:sub(2) -- Remove the prefix
-        local command, args = fullCommand:match("^(%S+)%s*(.*)$")
-        
-        if not command then
-            command = fullCommand
-            args = ""
-        end
-        
-        -- Check if player is staff
-        local isStaffMember, staffStatus = isStaff(player)
-        
-        -- Create notification message WITH USERNAME
-        local notificationMessage = staffStatus .. " Staff (" .. player.Name .. ") sent this command:\n"
-        notificationMessage = notificationMessage .. prefix .. command .. "\n"
-        
-        if args and args ~= "" then
-            notificationMessage = notificationMessage .. "with these arguments/targets:\n" .. args
-        else
-            notificationMessage = notificationMessage .. "with no arguments"
-        end
-        
-        -- Send notification
-        if _G.AdminXNotify then
-            _G.AdminXNotify({
-                Description = notificationMessage,
-                Title = "Staff Command Detected",
-                Duration = 8, -- Longer duration to read the info
-            })
-        else
-            -- Fallback notification
-            game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "Staff Command: " .. staffStatus .. " Staff - " .. player.Name,
-                Text = prefix .. command .. (args ~= "" and " | " .. args or ""),
-                Duration = 8,
-            })
-        end
-        
-        -- Also print to console for logging
-        print("[STAFF DETECTION] " .. staffStatus .. " Staff | " .. player.Name .. " | " .. prefix .. command .. " | " .. args)
+local function checkForStaffCommand(player, message)
+    -- ADD THIS ONE LINE:
+    if not _G.StaffDetectionEnabled then return end
+    
+    -- Check if message starts with staff prefix
+    local prefix = message:sub(1, 1)
+    if not table.find(StaffPrefixes, prefix) then
+        return
     end
+    
+    -- Extract command and arguments
+    local fullCommand = message:sub(2) -- Remove the prefix
+    local command, args = fullCommand:match("^(%S+)%s*(.*)$")
+    
+    if not command then
+        command = fullCommand
+        args = ""
+    end
+    
+    -- Check if player is staff
+    local isStaffMember, staffStatus = isStaff(player)
+    
+    -- Create notification message WITH USERNAME
+    local notificationMessage = staffStatus .. " Staff (" .. player.Name .. ") sent this command:\n"
+    notificationMessage = notificationMessage .. prefix .. command .. "\n"
+    
+    if args and args ~= "" then
+        notificationMessage = notificationMessage .. "with these arguments/targets:\n" .. args
+    else
+        notificationMessage = notificationMessage .. "with no arguments"
+    end
+    
+    -- Send notification
+    if _G.AdminXNotify then
+        _G.AdminXNotify({
+            Description = notificationMessage,
+            Title = "Staff Command Detected",
+            Duration = 8, -- Longer duration to read the info
+        })
+    else
+        -- Fallback notification
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Staff Command: " .. staffStatus .. " Staff - " .. player.Name,
+            Text = prefix .. command .. (args ~= "" and " | " .. args or ""),
+            Duration = 8,
+        })
+    end
+end
     
     -- Method 1: Use Player.Chatted event (most reliable)
     local Players = game:GetService("Players")
@@ -450,8 +450,6 @@ local function setupStaffCommandDetection()
     Players.PlayerAdded:Connect(function(player)
         setupPlayerMonitoring(player)
     end)
-    
-    print("Staff command detection activated - monitoring " .. #Players:GetPlayers() .. " players")
 end
 
 -- Auto-start staff detection when script loads
@@ -982,7 +980,6 @@ cmd.add({"walkonwalls"}, {"wallwalk", "funny"}, function()
 cmd.add({"staffdetect", "staffwatch"}, {"staffdetect (staffwatch)", "Toggle staff command detection"}, function()
     if _G.StaffDetectionEnabled then
         _G.StaffDetectionEnabled = false
-        -- Disconnect all chat listeners (you may need to implement this if needed)
         Notify({
             Description = "Staff command detection disabled",
             Title = "Admin X",
@@ -990,7 +987,6 @@ cmd.add({"staffdetect", "staffwatch"}, {"staffdetect (staffwatch)", "Toggle staf
         })
     else
         _G.StaffDetectionEnabled = true
-        setupStaffCommandDetection()
         Notify({
             Description = "Staff command detection enabled",
             Title = "Admin X",
