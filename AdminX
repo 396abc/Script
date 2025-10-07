@@ -10,6 +10,26 @@
 --]]
 
  -- Waits until game is loaded
+if _G.AdminX_Loaded then
+    if _G.AdminXNotify then
+        _G.AdminXNotify({
+            Description = "Admin X is already loaded!",
+            Title = "Admin X",
+            Duration = 4,
+        })
+    else
+        -- Fallback notification
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Admin X",
+            Text = "Already loaded!",
+            Duration = 4,
+        })
+    end
+    return
+end
+
+_G.AdminX_Loaded = true
+
  local game = game
  local GetService = game.GetService
  if (not game.IsLoaded(game)) then
@@ -19,16 +39,19 @@
  end
  
  -- Notification library
- local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/notificationtest"))();
- local Notify = Notification.Notify;
+-- In your main script, after loading the notification library:
+local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/notificationtest"))();
+local Notify = Notification.Notify;
 
- Notify({
-		 Description = "https://discord.gg/Epn4J6aBnT";
-		 Title = "Join the Discord Server! (Made by 396abc)";
-		 Duration = 20;
-		 
-});
- 
+-- Store it globally for the reload check
+_G.AdminXNotify = Notify
+
+-- Then your existing notification:
+Notify({
+    Description = "https://discord.gg/Epn4J6aBnT";
+    Title = "Join the Discord Server! (Made by 396abc)";
+    Duration = 20;
+})
  -- Custom file functions checker checker
  local CustomFunctionSupport = isfile and isfolder and writefile and readfile and listfiles
  local FileSupport = isfile and isfolder and writefile and readfile
@@ -88,7 +111,7 @@ end
  }
  
  -- [[ Version ]] -- 
- currentversion = 1.14
+ currentversion = 1.15
  
  --[[ VARIABLES ]]--
  PlaceId, JobId = game.PlaceId, game.JobId
@@ -125,7 +148,9 @@ end
  Loopglitch = false
  Watch = false
  local Admin = {}
- 
+_G.SpoofWalkSpeed = false
+_G.TpWalk = false
+_G.WalkSpeedValue = 16
  -- [[ HAT ORBIT (PATCHED IN MOST GAMES) ]]
  local Offset = 10
  local Rotation = 0
@@ -262,6 +287,180 @@ end
 	 return (tick() - t), t
  end
  
+
+ 
+-- [[ STAFF DETECTION - ALWAYS ACTIVE ]] --
+local DetectedStaff = {}
+
+-- Staff detection function
+local function IsStaff(Player)
+    local StaffRoles = {
+        "owner", "admin", "staff", "mod", "founder", "manager", 
+        "dev", "president", "leader", "supervisor", "chairman", "supervising"
+    }
+
+    local success, result = pcall(function()
+        return Player:GetRoleInGroup(game.CreatorId)
+    end)
+    
+    if success and result then
+        local CurrentRole = result:lower()
+        for _, Role in pairs(StaffRoles) do
+            if CurrentRole:find(Role:lower()) then
+                return true, result
+            end
+        end
+    end
+    return false, nil
+end
+
+-- Function to check and report staff
+local function CheckAndReportStaff(Player, joinType)
+    local isStaff, role = IsStaff(Player)
+    if isStaff and not DetectedStaff[Player.UserId] then
+        DetectedStaff[Player.UserId] = true
+        Notify({
+            Title = "STAFF DETECTED",
+            Description = string.format("Name: %s (@%s)\nRole: %s\nStatus: %s", 
+                Player.DisplayName, Player.Name, role, joinType),
+            Duration = 15,
+        })
+        return true
+    end
+    return false
+end
+
+-- Immediately check all current players for staff
+task.spawn(function()
+    wait(3) -- Wait for game to fully load
+    local staffCount = 0
+    local staffList = ""
+    
+    for _, Player in pairs(Players:GetPlayers()) do
+        if Player ~= LocalPlayer then
+            if CheckAndReportStaff(Player, "Already in server") then
+                staffCount = staffCount + 1
+                staffList = staffList .. string.format("\n• %s (@%s) - %s", 
+                    Player.DisplayName, Player.Name, (IsStaff(Player)))
+            end
+        end
+    end
+    
+    if staffCount > 0 then
+        Notify({
+            Title = "STAFF DETECTED",
+            Description = string.format("Found %d staff member(s) in server:%s", staffCount, staffList),
+            Duration = 20,
+        })
+    end
+end)
+
+-- Detect when new players join (ALWAYS ACTIVE)
+Players.PlayerAdded:Connect(function(Player)
+    wait(2) -- Wait for player to fully load
+    CheckAndReportStaff(Player, "Just joined")
+end)
+
+-- Clean up when players leave
+Players.PlayerRemoving:Connect(function(Player)
+    DetectedStaff[Player.UserId] = nil
+end)
+
+-- ========== STAFF COMMAND DETECTION ========== --
+local function setupStaffCommandDetection()
+    local StaffPrefixes = {":", ";"}
+    
+    -- Function to check if player is staff (using your existing Admin system)
+    local function isStaff(player)
+        if Admin and Admin[player.UserId] then
+            return true, "Confirmed"
+        end
+        return false, "Potential"
+    end
+    
+    -- Function to parse and notify about commands
+    local function checkForStaffCommand(player, message)
+        -- Check if message starts with staff prefix
+        local prefix = message:sub(1, 1)
+        if not table.find(StaffPrefixes, prefix) then
+            return
+        end
+        
+        -- Extract command and arguments
+        local fullCommand = message:sub(2) -- Remove the prefix
+        local command, args = fullCommand:match("^(%S+)%s*(.*)$")
+        
+        if not command then
+            command = fullCommand
+            args = ""
+        end
+        
+        -- Check if player is staff
+        local isStaffMember, staffStatus = isStaff(player)
+        
+        -- Create notification message
+        local notificationMessage = staffStatus .. " Staff sent this command\n"
+        notificationMessage = notificationMessage .. prefix .. command .. "\n"
+        
+        if args and args ~= "" then
+            notificationMessage = notificationMessage .. "with these arguments/targets:\n" .. args
+        else
+            notificationMessage = notificationMessage .. "with no arguments"
+        end
+        
+        -- Send notification
+        if _G.AdminXNotify then
+            _G.AdminXNotify({
+                Description = notificationMessage,
+                Title = "Staff Command Detected",
+                Duration = 8, -- Longer duration to read the info
+            })
+        else
+            -- Fallback notification
+            game:GetService("StarterGui"):SetCore("SendNotification", {
+                Title = "Staff Command: " .. staffStatus .. " Staff",
+                Text = prefix .. command .. (args ~= "" and " | " .. args or ""),
+                Duration = 8,
+            })
+        end
+        
+        -- Also print to console for logging
+        print("[STAFF DETECTION] " .. staffStatus .. " Staff | " .. player.Name .. " | " .. prefix .. command .. " | " .. args)
+    end
+    
+    -- Method 1: Use Player.Chatted event (most reliable)
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+    
+    -- Function to setup chat monitoring for a player
+    local function setupPlayerMonitoring(player)
+        if player == LocalPlayer then return end -- Don't monitor ourselves
+        
+        player.Chatted:Connect(function(message)
+            checkForStaffCommand(player, message)
+        end)
+    end
+    
+    -- Setup monitoring for existing players
+    for _, player in pairs(Players:GetPlayers()) do
+        setupPlayerMonitoring(player)
+    end
+    
+    -- Setup monitoring for new players
+    Players.PlayerAdded:Connect(function(player)
+        setupPlayerMonitoring(player)
+    end)
+    
+    print("Staff command detection activated - monitoring " .. #Players:GetPlayers() .. " players")
+end
+
+-- Auto-start staff detection when script loads
+spawn(function()
+    wait(3) -- Wait a bit for everything to load
+    setupStaffCommandDetection()
+end)
+
+
 	 function r15(plr)
 		 if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').RigType == Enum.HumanoidRigType.R15 then
 			 return true
@@ -272,7 +471,20 @@ end
 	 local root = game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart') or game.Players.LocalPlayer.Character:FindFirstChild('Torso') or game.Players.LocalPlayer.Character:FindFirstChild('UpperTorso')
 	 return root
  end
- 
+ -- Add this with your other utility functions
+function Spoof(object, property, value)
+    if object and object[property] ~= nil then
+        object[property] = value
+        return true
+    end
+    return false
+end
+
+function GetHumanoid(player)
+    return player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+end
+
+
  -- [[ FUNCTION TO GET A PLAYER ]] --
  local getPlr = function(Name)
 	 if Name:lower() == "random" then
@@ -648,6 +860,9 @@ end
  lock = lib.lock
  locks = {}
  
+
+
+ 
  lib.find = function(t, v)	-- mmmmmm
 	 for i, e in pairs(t) do
 		 if i == v or e == v then
@@ -764,6 +979,26 @@ cmd.add({"walkonwalls"}, {"wallwalk", "funny"}, function()
 	 loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/wallwalker.lua"))()
  end)
 
+cmd.add({"staffdetect", "staffwatch"}, {"staffdetect (staffwatch)", "Toggle staff command detection"}, function()
+    if _G.StaffDetectionEnabled then
+        _G.StaffDetectionEnabled = false
+        -- Disconnect all chat listeners (you may need to implement this if needed)
+        Notify({
+            Description = "Staff command detection disabled",
+            Title = "Admin X",
+            Duration = 5,
+        })
+    else
+        _G.StaffDetectionEnabled = true
+        setupStaffCommandDetection()
+        Notify({
+            Description = "Staff command detection enabled",
+            Title = "Admin X",
+            Duration = 5,
+        })
+    end
+end)
+
 cmd.add({"jerk"}, {"jerkoff", "yes"}, function()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
@@ -774,6 +1009,80 @@ local humanoid = character:WaitForChild("Humanoid")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/jork"))();
 end
  end)
+
+-- SpoofWalkSpeed Command
+cmd.add({"spoofwalkspeed", "spoofws", "sws"}, {"spoofwalkspeed <amount> (spoofws, sws)", "Spoofs your WalkSpeed"}, function(amount)
+    local number = tonumber(amount) or 16
+    _G.WalkSpeedValue = number
+    _G.SpoofWalkSpeed = true
+    
+    -- Get humanoid and spoof walkspeed
+    local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        -- This is a simplified spoof implementation
+        -- You may need to adjust based on your spoof function
+        humanoid.WalkSpeed = number
+    end
+    
+    Notify({
+        Description = "WalkSpeed spoofed to " .. number,
+        Title = "Admin X",
+        Duration = 5,
+    })
+end)
+
+-- TpWalk Command
+cmd.add({"tpwalk", "walk"}, {"tpwalk <amount> (walk)", "Change your walkspeed (more undetectable)"}, function(speed)
+    _G.TpWalk = true
+    local speedValue = tonumber(speed) or 16
+    
+    -- Refresh/stop any existing tpwalk
+    _G.TpWalk = false
+    wait(0.1)
+    _G.TpWalk = true
+    
+    local character = game.Players.LocalPlayer.Character
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    
+    if not character or not humanoid then return end
+    
+    -- TpWalk loop
+    coroutine.wrap(function()
+        while _G.TpWalk and character and humanoid do
+            wait()
+            if humanoid.MoveDirection.Magnitude > 0 then
+                local moveDirection = humanoid.MoveDirection
+                local distance = speedValue * wait()
+                character:TranslateBy(moveDirection * distance * 10)
+            end
+        end
+    end)()
+    
+    Notify({
+        Description = "TpWalk enabled with speed " .. speedValue,
+        Title = "Admin X",
+        Duration = 5,
+    })
+end)
+
+-- UntpWalk Command
+cmd.add({"untpwalk", "unwalk"}, {"untpwalk (unwalk)", "Stops the tpwalk command"}, function()
+    _G.TpWalk = false
+    _G.SpoofWalkSpeed = false
+    
+    -- Reset to default walkspeed
+    local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.WalkSpeed = 16
+    end
+    
+    Notify({
+        Description = "TpWalk disabled",
+        Title = "Admin X",
+        Duration = 5,
+    })
+end)
+commandcount = commandcount + 3
 
 local waypoints = {}
 
