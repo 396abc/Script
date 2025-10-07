@@ -398,8 +398,8 @@ local function setupStaffCommandDetection()
         -- Check if player is staff
         local isStaffMember, staffStatus = isStaff(player)
         
-        -- Create notification message
-        local notificationMessage = staffStatus .. " Staff sent this command\n"
+        -- Create notification message WITH USERNAME
+        local notificationMessage = staffStatus .. " Staff (" .. player.Name .. ") sent this command:\n"
         notificationMessage = notificationMessage .. prefix .. command .. "\n"
         
         if args and args ~= "" then
@@ -418,7 +418,7 @@ local function setupStaffCommandDetection()
         else
             -- Fallback notification
             game:GetService("StarterGui"):SetCore("SendNotification", {
-                Title = "Staff Command: " .. staffStatus .. " Staff",
+                Title = "Staff Command: " .. staffStatus .. " Staff - " .. player.Name,
                 Text = prefix .. command .. (args ~= "" and " | " .. args or ""),
                 Duration = 8,
             })
