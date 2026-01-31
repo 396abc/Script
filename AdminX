@@ -5394,65 +5394,30 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/m
  });
 		 end)
 
-		 AntiFling = false
-			 cmd.add({"antifling"}, {"antifling", "makes it so you cant collide with others"}, function()
- AntiFling = true
-
- local function NoCollision(PLR)
-	 if AntiFling and PLR.Character then
-		 for _,x in pairs(PLR.Character:GetDescendants()) do
-			 if x:IsA("BasePart") and x.CanCollide then
-				 x.CanCollide = false
-			 end
-		 end
-	 end
- end
- for _,v in pairs(game.Players:GetPlayers()) do
-	 if v ~= game.Players then
-		 local antifling = game:GetService('RunService').Stepped:connect(function()
-			 NoCollision(v)
-		 end)
-	 end
- end
- game.Players.PlayerAdded:Connect(function()
-	 if v ~= game.Players.LocalPlayer and antifling then
-		 local antifling = game:GetService('RunService').Stepped:connect(function()
-			NoCollision(v)
-		 end)
-	 end
- end)
- 
- wait();
- Notify({
- Description = "Anti fling enabled";
- Title = "Admin X";
- Duration = 5;
- 
-});
-			 end)
-
-			 cmd.add({"unantifling"}, {"unantifling", "removes antifling"}, function()
-AntiFling = true
-
-wait();
-Notify({
-Description = "Anti fling disabled";
-Title = "Admin X";
-Duration = 5;
-
-});
-
-for _,v in pairs(game.Players:GetPlayers()) do
-	if v ~= game.Players then
-char = v.Character
-for _,x in pairs(char:GetDescendants()) do
-	if x:IsA("BasePart") then
-		x.CanCollide = true
+		 cmd.add({"antifling"}, {"antifling", "Disables collision on other players to prevent flinging"}, function(args, speaker)
+	if antifling then
+		antifling:Disconnect()
+		antifling = nil
 	end
-end
+
+	antifling = RunService.Stepped:Connect(function()
+		for _, player in pairs(Players:GetPlayers()) do
+			if player ~= speaker and player.Character then
+				for _, v in pairs(player.Character:GetDescendants()) do
+					if v:IsA("BasePart") then
+						v.CanCollide = false
+					end
+				end
+			end
+		end
+	end)
+end)
+			 cmd.add({"unantifling"}, {"unantifling", "Stops antifling"}, function(args, speaker)
+	if antifling then
+		antifling:Disconnect()
+		antifling = nil
 	end
-end
-			 end)
+end)
  
 			 cmd.add({"gravitygun"}, {"gravitygun", "Probably the best gravity gun script thats fe"}, function()
 				wait();
