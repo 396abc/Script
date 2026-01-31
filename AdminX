@@ -2242,7 +2242,44 @@ end)
  cmd.add({"godmode", "god"}, {"godmode (god)", "Makes you unable to be killed"}, function()
 	 loadstring(game:HttpGet(('https://pastebin.com/raw/bbyuynM1'),true))()
  end)
- 
+
+cmd.add({"unclickfling", "stopmousefling"}, {"Stops all clickfling actions"}, function()
+    local Players = game:GetService("Players")
+    local Player = Players.LocalPlayer
+    local Mouse = Player:GetMouse()
+
+    -- disconnect all clickfling connections
+    for _, conn in pairs(getconnections(Mouse.Button1Down)) do
+        conn:Disable() -- disables the clickfling
+    end
+
+    -- reset velocity / rotvelocity of character if leftover
+    local Character = Player.Character
+    if Character and Character:FindFirstChild("HumanoidRootPart") then
+        local RootPart = Character.HumanoidRootPart
+        RootPart.Velocity = Vector3.new(0,0,0)
+        RootPart.RotVelocity = Vector3.new(0,0,0)
+    end
+
+    -- destroy lingering BodyVelocity
+    if Character then
+        for _,v in pairs(Character:GetChildren()) do
+            if v:IsA("BodyVelocity") and v.Name == "EpixVel" then
+                v:Destroy()
+            end
+        end
+    end
+
+    -- reset camera
+    local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
+    if Humanoid then
+        workspace.CurrentCamera.CameraSubject = Humanoid
+    end
+
+    print("Clickfling disconnected ✅")
+end)
+
+
  cmd.add({"clickfling", "mousefling"}, {"mousefling (clickfling)", "Fling a player by clicking them"}, function()
 	 local Players = game:GetService("Players")
 	 local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
