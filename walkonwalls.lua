@@ -2,6 +2,7 @@
 --
 -- Walk On Walls
 -- Fixed by 396abc
+local script = (typeof(script) == "Instance") and script or Instance.new("Folder")
 repeat wait()
 a = pcall(function()
 	game:WaitForChild("Players").LocalPlayer:WaitForChild("PlayerScripts").ChildAdded:Connect(function(c)
@@ -10314,32 +10315,26 @@ function GravityController:OnGravityStep(dt)
 	self.GravityUp = rotation * oldGravity
 	
 	local camCF = workspace.CurrentCamera.CFrame
-	local fDot = camCF.LookVector:Dot(newGravity)
-
-	local blend = math.clamp(math.abs(fDot), 0, 1)
-	local altForward = -math.sign(fDot ~= 0 and fDot or 1) * camCF.UpVector
-	local blendedForward = camCF.LookVector * (1 - blend) + altForward * blend
-
-	local cForward
-	if blendedForward.Magnitude > 0.0001 then
-		cForward = blendedForward.Unit
+	local function flatten(v)
+		return v - v:Dot(newGravity)*newGravity
+	end
+	local flatLook = flatten(camCF.LookVector)
+	local flatRight = flatten(camCF.RightVector)
+	local flatForward = newGravity:Cross(flatRight)
+	if flatForward.Magnitude > 0.001 then
+		if flatLook.Magnitude > 0.2 and flatForward:Dot(flatLook) < 0 then
+			flatForward = -flatForward
+		end
+	elseif flatLook.Magnitude > 0.001 then
+		flatForward = flatLook
 	else
-		cForward = self.RefForward
-	end
-
-	if cForward:Dot(self.RefForward) < 0 then
-		cForward = -cForward
-	end
-	self.RefForward = cForward
-	
-	local flatForward = cForward - cForward:Dot(newGravity)*newGravity
-	if flatForward.Magnitude < 0.0001 then
-		flatForward = self.RefForward - self.RefForward:Dot(newGravity)*newGravity
-	end
-	if flatForward.Magnitude < 0.0001 then
-		flatForward = camCF.RightVector - camCF.RightVector:Dot(newGravity)*newGravity
+		flatForward = flatten(self.RefForward)
+		if flatForward.Magnitude < 0.001 then
+			flatForward = flatten(camCF.UpVector)
+		end
 	end
 	local forward = flatForward.Unit
+	self.RefForward = forward
 	local left = newGravity:Cross(forward).Unit
 	
 	local move = self:GetMoveVector()
