@@ -974,7 +974,7 @@ end
  end)
 
 cmd.add({"walkonwalls"}, {"wallwalk", "funny"}, function()
-	 loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/wallwalker.lua"))()
+	 loadstring(game:HttpGet("https://raw.githubusercontent.com/396abc/Script/refs/heads/main/walkonwalls.lua"))()
  end)
 
 cmd.add({"staffdetect", "staffwatch"}, {"staffdetect (staffwatch)", "Toggle staff command detection"}, function()
